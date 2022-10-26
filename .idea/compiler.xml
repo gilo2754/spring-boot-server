@@ -6,16 +6,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="fundamentals" />
+        <module name="Module9" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="fundamentals" target="1.8" />
+      <module name="Module9" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="fundamentals" options="-parameters" />
+      <module name="Module9" options="-parameters" />
     </option>
   </component>
 </project>

@@ -49,8 +49,7 @@ public class TzaController {
     @GetMapping("/application/{id}")
     public ResponseEntity<Application> getApplication(@PathVariable("id") long id) {
         try {
-            return new ResponseEntity<Application>(applicationService.findApplication(id),
-                    HttpStatus.OK);
+            return new ResponseEntity<Application>(applicationService.findApplication(id), HttpStatus.OK);
         } catch (ApplicationNotFoundException exception) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Application Not Found");
         }
