@@ -1,12 +1,12 @@
 package com.pluralsight.service;
 
-import com.pluralsight.entity.Release;
-import com.pluralsight.repository.ReleaseRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
+import com.pluralsight.entity.Release;
+import com.pluralsight.repository.ReleaseRepository;
 
 @Service
 public class ReleaseServiceImpl implements ReleaseService {
@@ -15,7 +15,7 @@ public class ReleaseServiceImpl implements ReleaseService {
 
     @Override
     public List<Release> listReleases() {
-        return (List<Release>) releaseRepository.findAll();
+        return (List<Release>) this.releaseRepository.findAll();
     }
 
 }
