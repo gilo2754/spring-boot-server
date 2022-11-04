@@ -30,4 +30,29 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new ApplicationNotFoundException("Application Not Found");
     }
 
+    @Override
+    public void deleteApplication(long id) {
+        Optional<Application> optionalApplication = this.applicationRepository.findById(id);
+
+        if (optionalApplication.isPresent()) {
+            this.applicationRepository.deleteById(id);
+        } else
+            throw new ApplicationNotFoundException("Application with id " + id + "to delete Not Found");
+    }
+
+    @Override
+    public Application addApplication(Application application) {
+        System.out.println(application);
+        // Optional<Application> optionalApplication = this.applicationRepository.findById(application.));
+        // Optional<Application> optionalApplication = this.applicationRepository.findById(id);
+        //
+        // } else
+        // throw new ApplicationNotFoundException("Application with id " + id + "already exist");
+        // }
+        // TODO add some rule to avoid duplication
+        this.applicationRepository.save(application);
+        return application;
+
+    }
+
 }
