@@ -1,6 +1,7 @@
 package com.pluralsight.web;
 
-import com.pluralsight.service.ApplicationService;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.Assert.assertEquals;
+import com.pluralsight.service.ApplicationService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -31,30 +32,31 @@ public class TzaControllerTest {
     @Test
     public void getAllApplications() throws Exception {
 
-        //Create a post request with an accept header for application\json
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/tza/applications/")
-                .contentType(MediaType.APPLICATION_JSON);
+        // Create a post request with an accept header for application\json
+        RequestBuilder requestBuilder =
+            MockMvcRequestBuilders.get("/tza/applications/").contentType(MediaType.APPLICATION_JSON);
 
-        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MvcResult result = this.mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
 
-        //Assert that the return status is OK
+        // Assert that the return status is OK
         assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
 
     @Test
     public void getAllTickets() throws Exception {
 
-        //Create a post request with an accept header for application\json
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/tza/tickets/")
-                .contentType(MediaType.APPLICATION_JSON);
+        // Create a post request with an accept header for application\json
+        RequestBuilder requestBuilder =
+            MockMvcRequestBuilders.get("/tza/tickets/").contentType(MediaType.APPLICATION_JSON);
 
-        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MvcResult result = this.mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
 
-        //Assert that the return status is OK
+        // Assert that the return status is OK
         assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
+
+    // TODO Test getApplicationById
+    // TODO test new API End-Points
 }

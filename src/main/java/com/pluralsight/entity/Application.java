@@ -26,6 +26,7 @@ public class Application implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    // @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "application_id")
     private Long id;
 

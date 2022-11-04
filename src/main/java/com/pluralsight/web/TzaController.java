@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -47,4 +50,19 @@ public class TzaController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Application Not Found");
         }
     }
+
+    @PostMapping("/application/add")
+    public ResponseEntity<Application> createApplication(@RequestBody Application application) {
+        // public Application createApplication(@RequestBody Application application) {
+        this.applicationService.addApplication(application);
+        return ResponseEntity.noContent().build();
+
+    }
+
+    @DeleteMapping("/application/{id}")
+    public ResponseEntity<Application> deteleApplication(@PathVariable("id") long id) {
+        this.applicationService.deleteApplication(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
