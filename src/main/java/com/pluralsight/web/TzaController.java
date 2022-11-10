@@ -22,7 +22,7 @@ import com.pluralsight.service.TicketService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/tza")
+@RequestMapping("/api/v1")
 @AllArgsConstructor
 public class TzaController {
     private ApplicationService applicationService;
