@@ -31,7 +31,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             .build();
 
         UserDetails linadmin =
-            User.builder().username("adm").password(passwordEncoder().encode("pss")).roles(ADMIN.name())
+            User.builder().username("admin").password(passwordEncoder().encode("admin")).roles(ADMIN.name())
                 // .authorities(ADMIN.getGrantedAuthorities())//
                 .build();
 

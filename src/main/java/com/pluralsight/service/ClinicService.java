@@ -7,10 +7,11 @@ import com.pluralsight.entity.Clinic;
 public interface ClinicService {
     List<Clinic> listClinics();
 
-    Clinic findClinic(long id);
+    Clinic getClinicById(long id);
 
     void deleteClinic(long id);
 
-    Clinic addClinic(Clinic clinic);
+    Clinic createClinic(Clinic clinic);
 
+    Clinic update(Long clinicId, Clinic clinic);
 }

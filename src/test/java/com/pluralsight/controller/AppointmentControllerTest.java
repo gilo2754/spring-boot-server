@@ -22,7 +22,7 @@ import com.pluralsight.service.ClinicService;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TzaControllerTest {
+public class AppointmentControllerTest {
     @Autowired
     private MockMvc mockMvc;
 

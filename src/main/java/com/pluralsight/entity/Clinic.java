@@ -2,15 +2,12 @@ package com.pluralsight.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.pluralsight.enums.ClinicState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,22 +26,28 @@ public class Clinic implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "clinic_id")
-    private Long id;
+    private Long clinic_id;
 
     @Column(name = "clinic_name", nullable = false)
     private String clinic_name;
 
-    @Column
+    @Column(name="clinic_description")
     @Size(max = 200)
-    private String description;
+    private String clinic_description;
 
-    @Column
+    @Column(name="clinic_address")
+    @NotBlank
     @Size(max = 200)
-    private String address;
+    private String clinic_address;
 
     @NotBlank
     @Column(name = "clinic_phone_number")
     @Size(max = 20)
     private String clinic_phone_number;
+
+    @NotNull
+    @Column(name = "clinic_status")
+    @Enumerated(EnumType.STRING)
+    private ClinicState clinic_state = ClinicState.IN_REVIEW;
 
 }

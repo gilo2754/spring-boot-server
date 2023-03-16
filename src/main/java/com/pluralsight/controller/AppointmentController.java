@@ -2,6 +2,7 @@ package com.pluralsight.controller;
 
 import java.util.List;
 
+import com.pluralsight.exception.AppointmentNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,9 +25,7 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/api/v1")
 @AllArgsConstructor
-public class TzaController {
-    private ClinicService clinicService;
-
+public class AppointmentController {
     private AppointmentService appointmentService;
 
     @GetMapping("/appointments")
@@ -35,33 +34,25 @@ public class TzaController {
         return new ResponseEntity<List<Appointment>>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/clinics")
-    public ResponseEntity<List<Clinic>> getAllApplications() {
-        List<Clinic> list = this.clinicService.listClinics();
-        return new ResponseEntity<List<Clinic>>(list, HttpStatus.OK);
-    }
-
-    @GetMapping("/clinic/{id}")
-    public ResponseEntity<Clinic> getApplication(@PathVariable("id") long id) {
+    @GetMapping("/appointment/{id}")
+    public ResponseEntity<Appointment> getAppoitment(@PathVariable("id") long id) {
         try {
-            return new ResponseEntity<Clinic>(this.clinicService.findClinic(id),
+            return new ResponseEntity<Appointment>(this.appointmentService.getAppointmentById(id),
                 HttpStatus.OK);
-        } catch (ClinicNotFoundException exception) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Clinic Not Found");
+        } catch (AppointmentNotFoundException exception) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Appointment Not Found");
         }
     }
 
-    @PostMapping("/clinic/add")
-    public ResponseEntity<Clinic> createApplication(@RequestBody Clinic clinic) {
-        // public Application createApplication(@RequestBody Application application) {
-        this.clinicService.addClinic(clinic);
+    @PostMapping("/appointment/add")
+    public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment) {
+        this.appointmentService.createAppointment(appointment);
         return ResponseEntity.noContent().build();
-
     }
 
-    @DeleteMapping("/clinic/{id}")
-    public ResponseEntity<Clinic> deteleClinic(@PathVariable("id") long id) {
-        this.clinicService.deleteClinic(id);
+    @DeleteMapping("/appointment/{id}")
+    public ResponseEntity<Clinic> deteleAppointment(@PathVariable("id") long id) {
+        this.appointmentService.deleteAppointment(id);
         return ResponseEntity.noContent().build();
     }
 
