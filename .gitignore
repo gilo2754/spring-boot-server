@@ -1,1 +1,32 @@
-/target/
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Compiled class file
+target/
+
+# Dependency directories
+!.mvn/wrapper/maven-wrapper.jar
+mvnw
+mvnw.cmd
+src/main/resources/static/node_modules
+src/main/resources/static/bower_components
+node
+node_modules/
+bower_components/
+
+# Log files
+logs/
+*.log
+
+# .DS_Store files on macOS
+**/.DS_Store
+
+# Maven
+.mvn/
+*.jar.original
+
+# Environment variables
+.env
