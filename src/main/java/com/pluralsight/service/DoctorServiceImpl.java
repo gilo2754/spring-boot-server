@@ -1,7 +1,6 @@
 package com.pluralsight.service;
 
 import com.pluralsight.entity.Doctor;
-import com.pluralsight.entity.Patient;
 import com.pluralsight.exception.ClinicNotFoundException;
 import com.pluralsight.exception.DoctorNotFoundException;
 import com.pluralsight.repository.DoctorRepository;
@@ -61,7 +60,7 @@ public class DoctorServiceImpl implements DoctorService {
         existingDoctor.setEmail(updatedDoctor.getEmail());
         existingDoctor.setPhone_number(updatedDoctor.getPhone_number());
         existingDoctor.setDateOfBirth(updatedDoctor.getDateOfBirth());
-        existingDoctor.setSpeciality(updatedDoctor.getSpeciality());
+        existingDoctor.setDoctorSpeciality(updatedDoctor.getDoctorSpeciality());
         return doctorRepository.save(existingDoctor);
     }
 

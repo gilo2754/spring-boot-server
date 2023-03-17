@@ -11,6 +11,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -42,6 +43,7 @@ public class Person implements Serializable {
     @Column(name = "dateOfBirth")
     private LocalDate dateOfBirth;
 
+    /*
     public Person(Long person_id, String first_name, String last_name, String email, String phone_number, LocalDate dateOfBirth) {
         this.person_id = person_id;
         this.first_name = first_name;
@@ -50,4 +52,5 @@ public class Person implements Serializable {
         this.phone_number = phone_number;
         this.dateOfBirth = dateOfBirth;
     }
+    */
 }

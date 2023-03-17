@@ -1,11 +1,9 @@
 package com.pluralsight.entity;
-import com.pluralsight.enums.Speciality;
+import com.pluralsight.enums.DoctorSpeciality;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -15,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @AllArgsConstructor
-public class Doctor extends Person implements Serializable {
+public class Doctor extends Person {
 
   //  @Id
    // @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,7 +23,7 @@ public class Doctor extends Person implements Serializable {
     @NotNull
     @Column(name = "speciality")
     @Enumerated(EnumType.STRING)
-    private Speciality speciality;
+    private DoctorSpeciality doctorSpeciality;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clinic_id")

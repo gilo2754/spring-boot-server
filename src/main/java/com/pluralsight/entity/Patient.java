@@ -4,18 +4,16 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
-import javax.validation.constraints.Email;
+import java.util.List;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 @Entity
-@Table
+@Table(name = "patient")
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 @AllArgsConstructor
+@ToString
 public class Patient extends Person implements Serializable {
 
     //@Id
@@ -27,6 +25,8 @@ public class Patient extends Person implements Serializable {
     @Column(name = "social_number")
     private String social_number;
 
+    @OneToMany(mappedBy = "patient")
+    private List<Appointment> appointments;
     /*
     public Patient(Long person_id, String first_name, String last_name, String email, String phone_number, LocalDate dateOfBirth, String social_number) {
         super(person_id, first_name, last_name, email, phone_number, dateOfBirth);

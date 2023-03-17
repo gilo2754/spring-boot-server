@@ -15,14 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.pluralsight.entity.User;
 import com.pluralsight.exception.ClinicNotFoundException;
 import com.pluralsight.service.PatientService;
 
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/patient/api/v1")
+@RequestMapping("/api/v1")
 @AllArgsConstructor
 public class PatientController {
     private PatientService patientService;

@@ -1,6 +1,6 @@
 package com.pluralsight.enums;
 
-public enum Speciality  {
+public enum DoctorSpeciality {
     CARDIOLOGIA,
     DERMATOLOGIA,
     GASTROENTEROLOGIA,

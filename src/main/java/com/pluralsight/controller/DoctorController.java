@@ -13,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/doctor/api/v1")
+@RequestMapping("/api/v1")
 @AllArgsConstructor
 public class DoctorController {
     private DoctorService doctorService;
