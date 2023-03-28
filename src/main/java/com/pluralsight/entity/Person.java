@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Getter
 @Setter
 @NoArgsConstructor

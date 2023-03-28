@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @AllArgsConstructor
+@DiscriminatorValue("doctor")
 public class Doctor extends Person {
 
   //  @Id

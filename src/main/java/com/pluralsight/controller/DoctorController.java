@@ -19,14 +19,14 @@ public class DoctorController {
     private DoctorService doctorService;
 
     @GetMapping("/doctors")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+   // @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<List<Doctor>> getUsers() {
         List<Doctor> list = this.doctorService.listDoctors();
         return new ResponseEntity<List<Doctor>>(list, HttpStatus.OK);
     }
 
     @PostMapping("/doctor/add")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+   // @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<Doctor> createUser(@RequestBody Doctor doctor) {
         this.doctorService.createDoctor(doctor);
         System.out.println("New doctor was created");
@@ -34,7 +34,7 @@ public class DoctorController {
     }
 
     @DeleteMapping("/doctor/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<Doctor> deteleDoctor(@PathVariable("id") long id) {
         this.doctorService.deleteDoctor(id);
         System.out.println("Doctor with id: " + id + " was deleted");
@@ -42,7 +42,7 @@ public class DoctorController {
     }
 
     @GetMapping("/doctor/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<Doctor> getDoctor(@PathVariable("id") long id) {
         try {
             return new ResponseEntity<Doctor>(this.doctorService.findDoctor(id), HttpStatus.OK);

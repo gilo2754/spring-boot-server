@@ -59,6 +59,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             // .antMatchers(HttpMethod.POST, "admin/api/v1/**")
             // .hasAuthority(ApplicationUserPermision.USER_CREATE.getPermission())//
             .anyRequest().authenticated().and().httpBasic();
+
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
     }
 
     @Bean
