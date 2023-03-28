@@ -26,6 +26,9 @@ public class Doctor extends Person {
     @Enumerated(EnumType.STRING)
     private DoctorSpeciality doctorSpeciality;
 
+    @Column(name = "availability")
+    private String availability;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clinic_id")
     private Clinic clinic;

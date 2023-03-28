@@ -1,6 +1,7 @@
 package com.pluralsight.entity;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -49,5 +50,17 @@ public class Clinic implements Serializable {
     @Column(name = "clinic_status")
     @Enumerated(EnumType.STRING)
     private ClinicState clinic_state = ClinicState.IN_REVIEW;
+
+    @NotNull
+    @Column(name = "opening_time")
+    private LocalTime openingTime;
+
+    @NotNull
+    @Column(name = "closing_time")
+    private LocalTime closingTime;
+
+    public boolean isOpen(LocalTime time) {
+        return !time.isBefore(openingTime) && time.isBefore(closingTime);
+    }
 
 }
