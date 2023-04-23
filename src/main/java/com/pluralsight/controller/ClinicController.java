@@ -1,11 +1,10 @@
 package com.pluralsight.controller;
 
-import com.pluralsight.entity.Appointment;
 import com.pluralsight.entity.Clinic;
 import com.pluralsight.exception.ClinicNotFoundException;
-import com.pluralsight.service.AppointmentService;
 import com.pluralsight.service.ClinicService;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +18,19 @@ import java.util.List;
 public class ClinicController {
     private ClinicService clinicService;
 
-    @GetMapping("/clinics")
+    private static final String OBJ ="clinic";
+    private static final String ADD_PATH = "/"+ OBJ +"/add";
+    private static final String GET_ALL_PATH = "/"+ OBJ +"s";
+    private static final String OBJ_BY_ID_UPDATE_PATH = "/"+ OBJ +"/{clinicId}";
+    private static final String OBJ_BY_ID_PATH = "/"+ OBJ +"/{id}";
+
+    @GetMapping(GET_ALL_PATH)
     public ResponseEntity<List<Clinic>> getAllApplications() {
         List<Clinic> list = this.clinicService.listClinics();
         return new ResponseEntity<List<Clinic>>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/clinic/{id}")
+    @GetMapping(OBJ_BY_ID_PATH)
     public ResponseEntity<Clinic> getApplication(@PathVariable("id") long id) {
         try {
             return new ResponseEntity<Clinic>(this.clinicService.getClinicById(id),
@@ -35,19 +40,24 @@ public class ClinicController {
         }
     }
 
-    @PostMapping("/clinic/add")
+//    @PostMapping("/clinic/add")
+    @PostMapping(ADD_PATH)
     public ResponseEntity<Clinic> createApplication(@RequestBody Clinic clinic) {
         this.clinicService.createClinic(clinic);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/clinic/{id}")
-    public ResponseEntity<Clinic> deteleClinic(@PathVariable("id") long id) {
-        this.clinicService.deleteClinic(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping(OBJ_BY_ID_PATH)
+    public ResponseEntity<String> deteleClinic(@PathVariable("id") long id) {
+        try {
+            this.clinicService.deleteClinic(id);
+            return ResponseEntity.noContent().build();
+        } catch (DataIntegrityViolationException e) {
+            String message = "No se pueden borrar clinics si estas contienen appointment";
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
     }
-
-    @PutMapping("/clinic/{clinicId}")
+    @PutMapping(OBJ_BY_ID_UPDATE_PATH)
     public ResponseEntity<Clinic> updateClinic(@PathVariable Long clinicId, @RequestBody Clinic clinic) {
         Clinic updatedClinic = clinicService.update(clinicId, clinic);
         return ResponseEntity.ok(updatedClinic);

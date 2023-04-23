@@ -39,7 +39,7 @@ public class Clinic implements Serializable {
     private String clinic_description;
 
     @Column(name="clinic_address")
-   // @NotBlank
+   //@NotBlank
     @Size(max = 200)
     private String clinic_address;
 
@@ -47,9 +47,7 @@ public class Clinic implements Serializable {
     @Column(name = "clinic_phone_number")
     @Size(max = 20)
     private String clinic_phone_number;
-
     @NotNull
-    @Column(name = "clinic_state")
     //Not status to be able to use state(singular) and states(plural)
     @Enumerated(EnumType.STRING)
     private ClinicState clinic_state = ClinicState.IN_REVIEW;
