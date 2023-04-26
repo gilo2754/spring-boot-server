@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.pluralsight.enums.ClinicState;
+import com.pluralsight.enums.Speciality;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,6 +52,11 @@ public class Clinic implements Serializable {
     //Not status to be able to use state(singular) and states(plural)
     @Enumerated(EnumType.STRING)
     private ClinicState clinic_state = ClinicState.IN_REVIEW;
+
+  //  @NotNull
+    @Column(name = "speciality")
+    @Enumerated(EnumType.STRING)
+    private Speciality speciality;
 
 //    @NotNull
     @Column(name = "opening_time")

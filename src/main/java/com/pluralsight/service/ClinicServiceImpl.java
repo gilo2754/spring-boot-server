@@ -66,6 +66,7 @@ public class ClinicServiceImpl implements ClinicService {
         clinic.setClinic_address(updatedClinic.getClinic_address());
         clinic.setClinic_phone_number(updatedClinic.getClinic_phone_number());
         clinic.setClinic_name(updatedClinic.getClinic_name());
+        clinic.setSpeciality(updatedClinic.getSpeciality());
         clinic.setOpeningTime(updatedClinic.getOpeningTime());
         clinic.setClosingTime(updatedClinic.getClosingTime());
         return clinicRepository.save(clinic);

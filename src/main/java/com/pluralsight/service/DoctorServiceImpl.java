@@ -60,7 +60,7 @@ public class DoctorServiceImpl implements DoctorService {
         existingDoctor.setEmail(updatedDoctor.getEmail());
         existingDoctor.setPhone_number(updatedDoctor.getPhone_number());
         existingDoctor.setDateOfBirth(updatedDoctor.getDateOfBirth());
-        existingDoctor.setDoctorSpeciality(updatedDoctor.getDoctorSpeciality());
+        existingDoctor.setSpeciality(updatedDoctor.getSpeciality());
         return doctorRepository.save(existingDoctor);
     }
 
