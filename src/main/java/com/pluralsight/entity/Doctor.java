@@ -1,5 +1,5 @@
 package com.pluralsight.entity;
-import com.pluralsight.enums.DoctorSpeciality;
+import com.pluralsight.enums.Speciality;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,7 +24,8 @@ public class Doctor extends Person {
     @NotNull
     @Column(name = "speciality")
     @Enumerated(EnumType.STRING)
-    private DoctorSpeciality doctorSpeciality;
+    private Speciality speciality;
+
 
     @Column(name = "availability")
     private String availability;
