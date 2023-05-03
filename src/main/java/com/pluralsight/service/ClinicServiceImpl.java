@@ -2,6 +2,7 @@ package com.pluralsight.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,5 +72,17 @@ public class ClinicServiceImpl implements ClinicService {
         clinic.setClosingTime(updatedClinic.getClosingTime());
         return clinicRepository.save(clinic);
     }
+
+    //fixme; this return all clinics
+    @Transactional
+    public List<Clinic> getClinicsBySpeciality(String speciality) {
+        return clinicRepository.findBySpeciality(speciality)
+                .stream()
+                //avoid NPEs
+                .filter(clinic -> clinic != null && clinic.getSpeciality() != null && clinic.getSpeciality().equals(speciality))
+                .collect(Collectors.toList());
+    }
+
+
 
 }
