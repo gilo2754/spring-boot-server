@@ -25,11 +25,32 @@ public class ClinicController {
     private static final String OBJ_BY_ID_UPDATE_PATH = "/"+ OBJ +"/{clinicId}";
     private static final String OBJ_BY_ID_PATH = "/"+ OBJ +"/{id}";
 
+    /*   @GetMapping(GET_ALL_PATH)
+       public ResponseEntity<List<Clinic>> getAllClinics() {
+
+       }
+   */
     @GetMapping(GET_ALL_PATH)
-    public ResponseEntity<List<Clinic>> getAllApplications() {
-        List<Clinic> list = this.clinicService.listClinics();
-        return new ResponseEntity<List<Clinic>>(list, HttpStatus.OK);
+    public ResponseEntity<List<Clinic>> getClinicsBySpecialty(@RequestParam(name= "Speciality", required = false) String speciality) {
+//        public ResponseEntity<List<Clinic>> getClinicsBySpecialty(@RequestParam(value= "speciality", required = false) String speciality) {
+
+           if (speciality != null )
+            {
+            // Return list of clinics filtered by specialty
+            List<Clinic> clinicsBySpeciality = clinicService.getClinicsBySpeciality(speciality);
+            if (clinicsBySpeciality.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No clinics found for speciality: " + speciality);
+            }
+            return new ResponseEntity<>(clinicsBySpeciality, HttpStatus.OK);
+        } else {
+            // Return list of all clinics
+            List<Clinic> allClinics = this.clinicService.listClinics();
+            return new ResponseEntity<List<Clinic>>(allClinics, HttpStatus.OK);
+        }
+
+
     }
+
 
     @GetMapping(OBJ_BY_ID_PATH)
     public ResponseEntity<Clinic> getApplication(@PathVariable("id") long id) {

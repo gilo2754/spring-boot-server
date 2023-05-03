@@ -66,6 +66,18 @@ public class Clinic implements Serializable {
     @Column(name = "closing_time")
     private LocalTime closingTime;
 
+    //FIXME: Contructor really needed?
+   /* public Clinic(String s, String s1, Speciality pediatria) {
+    }
+    */
+    public Clinic(String clinic_name, String clinic_address, Speciality speciality) {
+        this.clinic_name = clinic_name;
+        this.clinic_address = clinic_address;
+        this.speciality = speciality;
+    }
+
+
+
     public boolean isOpen(LocalTime time) {
         return !time.isBefore(openingTime) && time.isBefore(closingTime);
     }
