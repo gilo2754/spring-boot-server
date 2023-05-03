@@ -14,4 +14,6 @@ public interface ClinicService {
     Clinic createClinic(Clinic clinic);
 
     Clinic update(Long clinicId, Clinic clinic);
+
+    List<Clinic> getClinicsBySpeciality(String speciality);
 }
