@@ -1,5 +1,6 @@
 package com.pluralsight.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,6 +27,7 @@ public class Patient extends Person implements Serializable {
     @Column(name = "social_number")
     private String social_number;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "patient")
     private List<Appointment> appointments;
     /*
