@@ -3,6 +3,7 @@ package com.pluralsight.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pluralsight.enums.AppointmentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,14 +26,17 @@ public class Appointment {
     @Column(name = "appointment_id")
     private Long appointment_id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "clinic_id")
     private Clinic clinic;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;

@@ -1,15 +1,20 @@
 package com.pluralsight.controller;
 
 import com.pluralsight.entity.Clinic;
+import com.pluralsight.entity.Doctor;
+import com.pluralsight.entity.Person;
 import com.pluralsight.exception.ClinicNotFoundException;
+import com.pluralsight.repository.DoctorRepository;
 import com.pluralsight.service.ClinicService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,6 +23,9 @@ import java.util.List;
 public class ClinicController {
     private ClinicService clinicService;
 
+    @Autowired
+    private DoctorRepository doctorRepository;
+
     private static final String OBJ ="clinic";
     private static final String ADD_PATH = "/"+ OBJ +"/add";
     private static final String GET_ALL_PATH = "/"+ OBJ +"s";
@@ -25,11 +33,11 @@ public class ClinicController {
     private static final String OBJ_BY_ID_UPDATE_PATH = "/"+ OBJ +"/{clinicId}";
     private static final String OBJ_BY_ID_PATH = "/"+ OBJ +"/{id}";
 
-    /*   @GetMapping(GET_ALL_PATH)
-       public ResponseEntity<List<Clinic>> getAllClinics() {
+    @GetMapping("/clinic/{clinic_id}/doctors")
+    public List<Doctor> getDoctorsByClinicId(@PathVariable Long clinic_id) {
+        return clinicService.getDoctorsByClinicId(clinic_id);
+    }
 
-       }
-   */
     @GetMapping(GET_ALL_PATH)
     public ResponseEntity<List<Clinic>> getClinicsBySpecialty(@RequestParam(name= "Speciality", required = false) String speciality) {
 //        public ResponseEntity<List<Clinic>> getClinicsBySpecialty(@RequestParam(value= "speciality", required = false) String speciality) {
@@ -62,7 +70,6 @@ public class ClinicController {
         }
     }
 
-//    @PostMapping("/clinic/add")
     @PostMapping(ADD_PATH)
     public ResponseEntity<Clinic> createApplication(@RequestBody Clinic clinic) {
         this.clinicService.createClinic(clinic);

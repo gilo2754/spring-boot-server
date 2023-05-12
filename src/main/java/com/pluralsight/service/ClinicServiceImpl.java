@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.pluralsight.entity.Doctor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,6 +84,15 @@ public class ClinicServiceImpl implements ClinicService {
                 .collect(Collectors.toList());
     }
 
-
+    @Transactional
+    public List<Doctor> getDoctorsByClinicId(Long clinicId) {
+        Optional<Clinic> clinicOptional = clinicRepository.findById(clinicId);
+        if (clinicOptional.isPresent()) {
+            Clinic clinic = clinicOptional.get();
+            return clinic.getDoctors();
+        } else {
+            throw new ClinicNotFoundException("Clinic with id " + clinicId + " not found");
+        }
+    }
 
 }

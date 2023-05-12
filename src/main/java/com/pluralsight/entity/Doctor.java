@@ -1,4 +1,5 @@
 package com.pluralsight.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pluralsight.enums.Speciality;
 import lombok.*;
 
@@ -30,9 +31,11 @@ public class Doctor extends Person {
     @Column(name = "availability")
     private String availability;
 
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clinic_id")
-    private Clinic clinic;
+    private Clinic clinic_id;
 
     @OneToMany(mappedBy = "doctor")
     private List<Appointment> appointments;
