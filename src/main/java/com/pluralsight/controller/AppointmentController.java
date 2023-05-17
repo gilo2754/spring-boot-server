@@ -28,7 +28,7 @@ import lombok.AllArgsConstructor;
 public class AppointmentController {
     private AppointmentService appointmentService;
 
-    @GetMapping("/appointments")
+    @GetMapping("/appointment")
     public ResponseEntity<List<Appointment>> getAllTickets() {
         List<Appointment> list = this.appointmentService.listAppointments();
         return new ResponseEntity<List<Appointment>>(list, HttpStatus.OK);

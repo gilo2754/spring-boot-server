@@ -18,7 +18,7 @@ import java.util.List;
 public class DoctorController {
     private DoctorService doctorService;
 
-    @GetMapping("/doctors")
+    @GetMapping("/doctor")
    // @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<List<Doctor>> getUsers() {
         List<Doctor> list = this.doctorService.listDoctors();

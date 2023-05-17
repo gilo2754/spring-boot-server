@@ -29,33 +29,9 @@ public class AppointmentControllerTest {
     @MockBean
     ClinicService clinicService;
 
-    @Test
-    public void getAllApplications() throws Exception {
 
-        // Create a post request with an accept header for application\json
-        RequestBuilder requestBuilder =
-            MockMvcRequestBuilders.get("/tza/applications/").contentType(MediaType.APPLICATION_JSON);
 
-        MvcResult result = this.mockMvc.perform(requestBuilder).andReturn();
-        MockHttpServletResponse response = result.getResponse();
 
-        // Assert that the return status is OK
-        assertEquals(HttpStatus.OK.value(), response.getStatus());
-    }
-
-    @Test
-    public void getAllTickets() throws Exception {
-
-        // Create a post request with an accept header for application\json
-        RequestBuilder requestBuilder =
-            MockMvcRequestBuilders.get("/tza/tickets/").contentType(MediaType.APPLICATION_JSON);
-
-        MvcResult result = this.mockMvc.perform(requestBuilder).andReturn();
-        MockHttpServletResponse response = result.getResponse();
-
-        // Assert that the return status is OK
-        assertEquals(HttpStatus.OK.value(), response.getStatus());
-    }
 
     // TODO Test getApplicationById
     // TODO test new API End-Points

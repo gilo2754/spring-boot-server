@@ -28,17 +28,17 @@ public class ClinicController {
 
     private static final String OBJ ="clinic";
     private static final String ADD_PATH = "/"+ OBJ +"/add";
-    private static final String GET_ALL_PATH = "/"+ OBJ +"s";
     //TODO use just 1 Obj by ID
     private static final String OBJ_BY_ID_UPDATE_PATH = "/"+ OBJ +"/{clinicId}";
     private static final String OBJ_BY_ID_PATH = "/"+ OBJ +"/{id}";
+
 
     @GetMapping("/clinic/{clinic_id}/doctors")
     public List<Doctor> getDoctorsByClinicId(@PathVariable Long clinic_id) {
         return clinicService.getDoctorsByClinicId(clinic_id);
     }
 
-    @GetMapping(GET_ALL_PATH)
+    @GetMapping(OBJ)
     public ResponseEntity<List<Clinic>> getClinicsBySpecialty(@RequestParam(name= "Speciality", required = false) String speciality) {
 //        public ResponseEntity<List<Clinic>> getClinicsBySpecialty(@RequestParam(value= "speciality", required = false) String speciality) {
 
