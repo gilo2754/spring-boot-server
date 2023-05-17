@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.pluralsight.entity.Doctor;
+import com.pluralsight.enums.Speciality;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,8 +77,8 @@ public class ClinicServiceImpl implements ClinicService {
 
     //fixme; this return all clinics
     @Transactional
-    public List<Clinic> getClinicsBySpeciality(String speciality) {
-        return clinicRepository.findBySpeciality(speciality)
+    public List<Clinic> getClinicsBySpeciality(Speciality speciality) {
+        return clinicRepository.findBySpeciality(speciality.getValue())
                 .stream()
                 //avoid NPEs
                 .filter(clinic -> clinic != null && clinic.getSpeciality() != null && clinic.getSpeciality().equals(speciality))

@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 @AllArgsConstructor
-@DiscriminatorValue("doctor")
+@DiscriminatorValue("DOCTOR")
 public class Doctor extends Person {
 
   //  @Id

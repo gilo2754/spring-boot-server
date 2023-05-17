@@ -3,6 +3,7 @@ package com.pluralsight.controller;
 import com.pluralsight.entity.Clinic;
 import com.pluralsight.entity.Doctor;
 import com.pluralsight.entity.Person;
+import com.pluralsight.enums.Speciality;
 import com.pluralsight.exception.ClinicNotFoundException;
 import com.pluralsight.repository.DoctorRepository;
 import com.pluralsight.service.ClinicService;
@@ -39,7 +40,7 @@ public class ClinicController {
     }
 
     @GetMapping(OBJ)
-    public ResponseEntity<List<Clinic>> getClinicsBySpecialty(@RequestParam(name= "Speciality", required = false) String speciality) {
+    public ResponseEntity<List<Clinic>> getClinicsBySpecialty(@RequestParam(name= "Speciality", required = false) Speciality speciality) {
 //        public ResponseEntity<List<Clinic>> getClinicsBySpecialty(@RequestParam(value= "speciality", required = false) String speciality) {
 
            if (speciality != null )
@@ -47,7 +48,7 @@ public class ClinicController {
             // Return list of clinics filtered by specialty
             List<Clinic> clinicsBySpeciality = clinicService.getClinicsBySpeciality(speciality);
             if (clinicsBySpeciality.isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No clinics found for speciality: " + speciality);
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No clinics found for speciality: " );//+ speciality);
             }
             return new ResponseEntity<>(clinicsBySpeciality, HttpStatus.OK);
         } else {
