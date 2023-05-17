@@ -21,8 +21,10 @@ VALUES
 
 --Appointments:
 INSERT INTO appointment (appointment_id, clinic_id, patient_id, doctor_id, start_time, end_time, appointment_status)
-VALUES (1, 1, 1, 3, '2023-04-01 09:00:00', '2023-04-01 10:00:00', 'PENDING'),
-       (2, 2, 2, 3, '2023-04-02 11:00:00', '2023-04-02 12:00:00', 'COMPLETED');
+VALUES (1, 1, 1, 4, '2023-04-01 09:00:00', '2023-04-01 10:00:00', 'PENDING'),
+       (2, 2, 2, 3, '2023-04-02 11:00:00', '2023-04-02 12:00:00', 'COMPLETED'),
+       (3, 2, 2, 3, '2023-04-02 11:00:00', '2023-04-02 12:00:00', 'PENDING');
+
 
 
 

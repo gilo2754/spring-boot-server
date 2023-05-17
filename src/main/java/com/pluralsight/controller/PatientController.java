@@ -26,7 +26,7 @@ import lombok.AllArgsConstructor;
 public class PatientController {
     private PatientService patientService;
 
-    @GetMapping("/patients")
+    @GetMapping("/patient")
     //@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<List<Patient>> getPatients() {
         List<Patient> list = this.patientService.listPatients();

@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -29,7 +30,7 @@ public class Doctor extends Person {
 
 
     @Column(name = "availability")
-    private String availability;
+    private LocalTime availability;
 
 
     @JsonIgnore
