@@ -13,6 +13,5 @@ import org.springframework.stereotype.Repository;
 
 public interface ClinicRepository extends CrudRepository<Clinic, Long> {
 
-    //Should this be in a
     List<Clinic> findBySpeciality(String speciality);
 }

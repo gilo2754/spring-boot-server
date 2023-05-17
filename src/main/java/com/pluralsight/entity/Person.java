@@ -1,5 +1,6 @@
 package com.pluralsight.entity;
 
+import com.pluralsight.enums.PersonType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,8 +11,10 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-@Table
+@Table//(name = "person")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "personType", discriminatorType = DiscriminatorType.STRING)
+//@Data
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,12 +27,17 @@ public class Person implements Serializable {
     @Column(nullable = false) // name = "user_id")
     private Long person_id;
 
-    @NotBlank
-    @Column(name = "first_name")
-    private String first_name;
+  //  @Getter(AccessLevel.NONE)
+    @Column(name = "personType", insertable = false, updatable = false)
+    private String personType = PersonType.DOCTOR.toString();
 
-    @Column(name = "last_name")
-    private String last_name;
+
+    @NotBlank
+    @Column(name = "firstName")
+    private String firstName;
+
+    @Column(name = "lastName")
+    private String lastName;
 
     @NotBlank
     @Size(max = 50)
@@ -37,19 +45,19 @@ public class Person implements Serializable {
     private String email;
 
     @NotBlank
-    @Column(name = "phone_number")
-    private String phone_number;
+    @Column(name = "phoneNumber")
+    private String phoneNumber;
 
     @Column(name = "dateOfBirth")
     private LocalDate dateOfBirth;
 
     /*
-    public Person(Long person_id, String first_name, String last_name, String email, String phone_number, LocalDate dateOfBirth) {
+    public Person(Long person_id, String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth) {
         this.person_id = person_id;
-        this.first_name = first_name;
-        this.last_name = last_name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
-        this.phone_number = phone_number;
+        this.phoneNumber = phoneNumber;
         this.dateOfBirth = dateOfBirth;
     }
     */

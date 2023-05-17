@@ -1,21 +1,20 @@
 package com.pluralsight.service;
 
-import com.pluralsight.entity.Doctor;
-import com.pluralsight.exception.ClinicNotFoundException;
-import com.pluralsight.exception.DoctorNotFoundException;
-import com.pluralsight.repository.DoctorRepository;
+import com.pluralsight.entity.Person;
+import com.pluralsight.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-public class DoctorServiceImpl implements DoctorService {
+public class PersonServiceImpl implements PersonService {
     @Autowired
-    private DoctorRepository doctorRepository;
+    private PersonRepository personRepository;
 
+    /*
     @Transactional
     public Doctor createDoctor(Doctor doctor) {
         this.doctorRepository.save(doctor);
@@ -63,6 +62,20 @@ public class DoctorServiceImpl implements DoctorService {
         existingDoctor.setSpeciality(updatedDoctor.getSpeciality());
         return doctorRepository.save(existingDoctor);
     }
+*/
 
 
+    @Transactional(readOnly = true)
+    public List<Person> listPerson() {
+        return (List<Person>) this.personRepository.findAll();
+    }
+
+    @Transactional
+    public List<Person> listPersonByType(String personType) {
+        return personRepository.findByPersonType(personType)
+                .stream()
+                //avoid NPEs
+                .filter(person -> person != null && person.getPersonType() != null && person.getPersonType().equals(personType))
+                .collect(Collectors.toList());
+    }
 }

@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@DiscriminatorValue("patient")
+@DiscriminatorValue("PATIENT")
 public class Patient extends Person implements Serializable {
 
     //@Id

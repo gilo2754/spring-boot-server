@@ -51,7 +51,7 @@ public class ClinicServiceImplTest {
         when(clinicRepository.findBySpeciality(anyString())).thenReturn(clinics);
 
         // call the method being tested
-        List<Clinic> result = clinicService.getClinicsBySpeciality(speciality);
+        List<Clinic> result = clinicService.getClinicsBySpeciality(Speciality.valueOf(speciality));
 
         // verify that the correct clinics were returned
         assertThat(result).containsExactly(clinic1, clinic3);

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.pluralsight.entity.Clinic;
 import com.pluralsight.entity.Doctor;
+import com.pluralsight.enums.Speciality;
 
 public interface ClinicService {
     List<Clinic> listClinics();
@@ -16,7 +17,7 @@ public interface ClinicService {
 
     Clinic update(Long clinicId, Clinic clinic);
 
-    List<Clinic> getClinicsBySpeciality(String speciality);
+    List<Clinic> getClinicsBySpeciality(Speciality speciality);
 
     List<Doctor> getDoctorsByClinicId(Long clinicId);
 }
