@@ -20,8 +20,7 @@ class ClinicControllerTest {
 
     @Autowired
     private ClinicService clinicService;
-    @Autowired
-    private MockMvc mockMvc;
+
     @Test // Sanity check
     public void contextLoads() throws Exception {
         assertThat(clinicService).isNotNull();
