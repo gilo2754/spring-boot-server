@@ -50,6 +50,7 @@ public class Clinic implements Serializable {
     @Column(name = "clinic_phone_number")
     @Size(max = 20)
     private String clinic_phone_number;
+
     @NotNull
     //Not status to be able to use state(singular) and states(plural)
     @Enumerated(EnumType.STRING)

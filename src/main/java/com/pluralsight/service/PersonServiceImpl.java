@@ -1,18 +1,72 @@
 package com.pluralsight.service;
 
 import com.pluralsight.entity.Person;
+import com.pluralsight.exception.PersonNotFoundException;
 import com.pluralsight.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class PersonServiceImpl implements PersonService {
     @Autowired
     private PersonRepository personRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public PersonServiceImpl(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Transactional
+    public Person createOrUpdatePerson(Person person) {
+        // Obtener la contraseña sin encriptar de la persona
+        String plainPassword = person.getPassword();
+
+        // Encriptar la contraseña utilizando el PasswordEncoder
+        String encryptedPassword = passwordEncoder.encode(plainPassword);
+
+        // Establecer la contraseña encriptada en la persona
+        person.setPassword(encryptedPassword);
+
+        // Resto del código para crear o actualizar la persona
+        return this.personRepository.save(person);
+
+    }
+
+    @Transactional(readOnly = true)
+    public List<Person> listPerson() {
+        return (List<Person>) this.personRepository.findAll();
+    }
+
+    @Transactional
+    public List<Person> listPersonByType(String personType) {
+        return personRepository.findByPersonType(personType)
+                .stream()
+                //avoid NPEs
+                .filter(person -> person != null && person.getPersonType() != null && person.getPersonType().equals(personType))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public Optional<Person> getPersonById(Long personId) {
+        Optional<Person> optionalPerson = this.personRepository.findById(personId);
+
+        if (optionalPerson.isPresent()) {
+            return optionalPerson;
+        } else
+            throw new PersonNotFoundException("Person with id " + personId + " Not Found");
+    }
+
+    @Transactional
+    public Person createPerson(Person person) {
+        return this.personRepository.save(person);
+    }
 
     /*
     @Transactional
@@ -64,18 +118,4 @@ public class PersonServiceImpl implements PersonService {
     }
 */
 
-
-    @Transactional(readOnly = true)
-    public List<Person> listPerson() {
-        return (List<Person>) this.personRepository.findAll();
-    }
-
-    @Transactional
-    public List<Person> listPersonByType(String personType) {
-        return personRepository.findByPersonType(personType)
-                .stream()
-                //avoid NPEs
-                .filter(person -> person != null && person.getPersonType() != null && person.getPersonType().equals(personType))
-                .collect(Collectors.toList());
-    }
 }

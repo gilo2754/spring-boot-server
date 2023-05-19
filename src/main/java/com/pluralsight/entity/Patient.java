@@ -1,6 +1,7 @@
 package com.pluralsight.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pluralsight.enums.PersonType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "patient")
+@Table(name = "PATIENT")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,7 +28,7 @@ public class Patient extends Person implements Serializable {
     @Column(name = "social_number")
     private String social_number;
 
-    @JsonIgnore
+    //@JsonIgnore
     @OneToMany(mappedBy = "patient")
     private List<Appointment> appointments;
     /*

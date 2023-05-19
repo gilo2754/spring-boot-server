@@ -15,7 +15,7 @@ public interface ClinicService {
 
     Clinic createClinic(Clinic clinic);
 
-    Clinic update(Long clinicId, Clinic clinic);
+    Clinic updateClinic(Long clinicId, Clinic clinic);
 
     List<Clinic> getClinicsBySpeciality(Speciality speciality);
 

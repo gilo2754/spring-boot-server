@@ -4,20 +4,15 @@ VALUES
 (2, 'Clinica Santa Maria', 'Clinica especializada en pediatría y obstetricia', 'Avenida Santa Maria 456', '+52 555-234-5678', 'ACTIVE', 'OFTALMOLOGIA', '09:00:00', '17:00:00');
 
 --Patients:
-INSERT INTO person (person_id, person_type, first_name, last_name, email, phone_number, date_of_birth, social_number)
-VALUES      (1, 'PATIENT', 'CalinPatient', 'Menji', 'mail@asd.de', '45678932', '1990-01-02', '012345'),
-            (2, 'PATIENT', 'ConxnPatient', 'Ruiz', 'mail@asd.de', '45678932', '1990-01-02', '012345');
+INSERT INTO person (person_id, person_type, first_name, last_name, email, phone_number, date_of_birth, social_number, password)
+VALUES (1, 'PATIENT', 'CalinPatient', 'Menji', 'mail@asd.de', '45678932', '1990-01-02', '012345', 'password1'),
+       (2, 'PATIENT', 'ConxnPatient', 'Ruiz', 'mail@asd.de', '45678932', '1990-01-02', '012345', 'password2');
 
 --Doctors:
-INSERT INTO person (person_id, person_type, first_name, last_name, email, phone_number, date_of_birth,
-                    speciality, clinic_id)
-VALUES
-    (3, 'DOCTOR', 'MarioDoc', 'Menji', 'mail@asd.de','45678932', '1990-01-02',  'NEUROLOGIA',  1),
-    (4, 'DOCTOR', 'JuanitoDoc', 'Menji', 'mail@asd.de','45678932', '1990-01-02',  'NEUROLOGIA',  1),
-    (5, 'DOCTOR', 'BobDOC', 'Johnson', 'bobjohnson@example.com', '+123456789', '1985-01-01', 'DERMATOLOGIA', 2);
-
-
-
+INSERT INTO person (person_id, person_type, first_name, last_name, email, phone_number, date_of_birth, speciality, clinic_id, password)
+VALUES (3, 'DOCTOR', 'MarioDoc', 'Menji', 'mail@asd.de','45678932', '1990-01-02', 'NEUROLOGIA', 1, 'password3'),
+       (4, 'DOCTOR', 'JuanitoDoc', 'Menji', 'mail@asd.de','45678932', '1990-01-02', 'NEUROLOGIA', 1, 'password4'),
+       (5, 'DOCTOR', 'BobDOC', 'Johnson', 'bobjohnson@example.com', '+123456789', '1985-01-01', 'DERMATOLOGIA', 2, 'password5');
 
 --Appointments:
 INSERT INTO appointment (appointment_id, clinic_id, patient_id, doctor_id, start_time, end_time, appointment_status)

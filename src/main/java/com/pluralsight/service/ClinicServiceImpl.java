@@ -60,7 +60,7 @@ public class ClinicServiceImpl implements ClinicService {
     }
 
     @Transactional
-    public Clinic update(Long clinicId, Clinic updatedClinic) {
+    public Clinic updateClinic(Long clinicId, Clinic updatedClinic) {
         Clinic clinic = clinicRepository.findById(clinicId)
                 .orElseThrow(() -> new ClinicNotFoundException("Clinic not found with id " + clinicId));
         clinic.setClinic_name(updatedClinic.getClinic_name());
