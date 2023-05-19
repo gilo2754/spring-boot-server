@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @DiscriminatorValue("DOCTOR")
-public class Doctor extends Person {
+public class Doctor extends Person implements Serializable {
 
   //  @Id
    // @GeneratedValue(strategy = GenerationType.AUTO)

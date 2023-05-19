@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @Table//(name = "person")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "personType", discriminatorType = DiscriminatorType.STRING)
-//@Data
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,9 +27,16 @@ public class Person implements Serializable {
     private Long person_id;
 
   //  @Getter(AccessLevel.NONE)
-    @Column(name = "personType", insertable = false, updatable = false)
-    private String personType = PersonType.DOCTOR.toString();
+  //  @Column(name = "personType", insertable = false, updatable = false)
+    //private String personType = PersonType.DOCTOR.toString();
 
+  @Column(name = "personType", insertable = false, updatable = false)
+  private String personType = PersonType.DOCTOR.toString();
+
+
+    @NotBlank
+    //@Size(max = 50)
+    private String password;
 
     @NotBlank
     @Column(name = "firstName")

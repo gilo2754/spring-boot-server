@@ -2,20 +2,15 @@ package com.pluralsight.controller;
 
 import com.pluralsight.entity.Clinic;
 import com.pluralsight.entity.Doctor;
-import com.pluralsight.entity.Person;
 import com.pluralsight.enums.Speciality;
 import com.pluralsight.exception.ClinicNotFoundException;
-import com.pluralsight.repository.DoctorRepository;
 import com.pluralsight.service.ClinicService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,10 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ClinicController {
     private ClinicService clinicService;
-
-    @Autowired
-    private DoctorRepository doctorRepository;
-
     private static final String OBJ ="clinic";
     private static final String ADD_PATH = "/"+ OBJ +"/add";
     //TODO use just 1 Obj by ID
@@ -57,9 +48,7 @@ public class ClinicController {
             return new ResponseEntity<List<Clinic>>(allClinics, HttpStatus.OK);
         }
 
-
     }
-
 
     @GetMapping(OBJ_BY_ID_PATH)
     public ResponseEntity<Clinic> getApplication(@PathVariable("id") long id) {
@@ -89,7 +78,7 @@ public class ClinicController {
     }
     @PutMapping(OBJ_BY_ID_UPDATE_PATH)
     public ResponseEntity<Clinic> updateClinic(@PathVariable Long clinicId, @RequestBody Clinic clinic) {
-        Clinic updatedClinic = clinicService.update(clinicId, clinic);
+        Clinic updatedClinic = clinicService.updateClinic(clinicId, clinic);
         return ResponseEntity.ok(updatedClinic);
     }
 

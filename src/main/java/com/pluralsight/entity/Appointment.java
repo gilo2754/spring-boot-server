@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,13 +21,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 @AllArgsConstructor
-public class Appointment {
+public class Appointment implements Serializable {
    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "appointment_id")
     private Long appointment_id;
 
-    @JsonIgnore
+   // @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "clinic_id")
     private Clinic clinic;
