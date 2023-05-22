@@ -3,6 +3,7 @@ package com.pluralsight.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pluralsight.enums.AppointmentStatus;
 import lombok.AllArgsConstructor;
@@ -32,12 +33,13 @@ public class Appointment implements Serializable {
     @JoinColumn(name = "clinic_id")
     private Clinic clinic;
 
-    @JsonIgnore
+    //@JsonIgnore
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
@@ -49,6 +51,7 @@ public class Appointment implements Serializable {
     @NotNull
     @Column(name = "end_time")
     private LocalDateTime endTime;
+
     @NotNull
     @Column(name = "appointment_status")
     @Enumerated(EnumType.STRING)

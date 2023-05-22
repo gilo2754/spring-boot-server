@@ -31,7 +31,7 @@ public class Person implements Serializable {
     //private String personType = PersonType.DOCTOR.toString();
 
   @Column(name = "personType", insertable = false, updatable = false)
-  private String personType = PersonType.DOCTOR.toString();
+  private String personType;// = PersonType.DOCTOR.toString();
 
 
     @NotBlank

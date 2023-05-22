@@ -1,11 +1,17 @@
 package com.pluralsight.service;
 
 import com.pluralsight.entity.Appointment;
+import com.pluralsight.entity.Clinic;
 import com.pluralsight.entity.Person;
 import com.pluralsight.enums.Speciality;
+import com.pluralsight.exception.ClinicNotFoundException;
+import com.pluralsight.exception.PersonNotFoundException;
 import com.pluralsight.repository.AppointmentRepository;
+import com.pluralsight.repository.ClinicRepository;
+import com.pluralsight.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,20 +23,40 @@ public class AppointmentServiceImpl implements AppointmentService {
     private AppointmentRepository appointmentRepository;
 
     @Autowired
+    private PersonRepository personRepository;
+
+    @Autowired
+    private ClinicRepository clinicRepository;
+    @Autowired
     private PersonService personService;
 
-    @Override
-        public List<Appointment> listAppointments() {
+    @Transactional
+    public List<Appointment> listAppointments() {
             return (List<Appointment>) this.appointmentRepository.findAll();
         }
 
+    @Transactional
+    public Appointment createAppointment(Appointment appointment){ //  throws PersonNotFoundException, ClinicNotFoundException {
 
- public Appointment createAppointment(Appointment appointment) {
+        Optional<Person> patientOptional = personRepository.findById(appointment.getPatient().getPerson_id());
+        if (patientOptional.isEmpty()) {
+            throw new PersonNotFoundException("El paciente seleccionado no existe.");
+        }
+
+        Optional<Person> doctorOptional = personRepository.findById(appointment.getDoctor().getPerson_id());
+        if (doctorOptional.isEmpty()) {
+         throw new PersonNotFoundException("El doctorX seleccionado no existe.");
+     }
+
+     Optional<Clinic> clinicOptional = clinicRepository.findById(appointment.getClinic().getClinic_id());
+     if (clinicOptional.isEmpty()) {
+         throw new ClinicNotFoundException("La clínica seleccionada no existe.");
+     }
 
      return appointmentRepository.save(appointment);
  }
  /*
-    @Override
+    @Transactional
     public Appointment createAppointment(Appointment appointment) {
         Optional<Person> optionalPerson = personService.getPersonById(personId);
         int maxAppointmentsPerSpecialty = 2; // Define your maximum appointments per specialty limit
@@ -70,17 +96,17 @@ public class AppointmentServiceImpl implements AppointmentService {
 */
 
 
-    @Override
+    @Transactional
     public Appointment getAppointmentById(Long id) {
         return appointmentRepository.findById(id).orElse(null);
     }
 
-    @Override
+    @Transactional
     public Appointment updateAppointment(Appointment appointment) {
         return appointmentRepository.save(appointment);
     }
 
-    @Override
+    @Transactional
     public void deleteAppointment(long id) {
         appointmentRepository.deleteById(id);
     }
