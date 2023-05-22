@@ -3,6 +3,7 @@ package com.pluralsight.controller;
 import java.util.List;
 
 import com.pluralsight.exception.AppointmentNotFoundException;
+import com.pluralsight.exception.PersonNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,9 +46,13 @@ public class AppointmentController {
     }
 
     @PostMapping("/appointment/add")
-    public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment) {
-        this.appointmentService.createAppointment(appointment);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> createAppointment(@RequestBody Appointment appointment) {
+        try {
+            appointmentService.createAppointment(appointment);
+            return ResponseEntity.ok("Cita médica creada exitosamente.");
+        } catch (PersonNotFoundException e) {
+            return ResponseEntity.badRequest().body("El doctor o paciente seleccionado no existe.");
+        }
     }
 
     @DeleteMapping("/appointment/{id}")

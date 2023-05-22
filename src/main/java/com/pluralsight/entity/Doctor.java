@@ -1,5 +1,6 @@
 package com.pluralsight.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.pluralsight.enums.Speciality;
 import lombok.*;
 
@@ -29,17 +30,16 @@ public class Doctor extends Person implements Serializable {
     @Enumerated(EnumType.STRING)
     private Speciality speciality;
 
-
     @Column(name = "availability")
     private LocalTime availability;
-
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clinic_id")
     private Clinic clinic_id;
 
-    @OneToMany(mappedBy = "doctor")
+    @JsonIgnore
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL)
     private List<Appointment> appointments;
 
     /*
