@@ -45,7 +45,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         Optional<Person> doctorOptional = personRepository.findById(appointment.getDoctor().getPerson_id());
         if (doctorOptional.isEmpty()) {
-         throw new PersonNotFoundException("El doctorX seleccionado no existe.");
+         throw new PersonNotFoundException("El doctor seleccionado no existe.");
      }
 
      Optional<Clinic> clinicOptional = clinicRepository.findById(appointment.getClinic().getClinic_id());
