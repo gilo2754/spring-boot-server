@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.pluralsight.exception.AppointmentNotFoundException;
 import com.pluralsight.exception.PersonNotFoundException;
+import com.pluralsight.service.PersonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -30,6 +31,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class AppointmentController {
     private AppointmentService appointmentService;
+    private PersonService personService;
 
     @GetMapping("/appointment")
     public ResponseEntity<List<Appointment>> getMyAppointments(Authentication authentication) {
@@ -38,20 +40,23 @@ public class AppointmentController {
         return ResponseEntity.ok(userAppointments);
     }
 
+    /**
+     * Extracts the personId from the authentication.
+     * Finds the personId by username and returns the appointments from this user.
+     *
+     * @param authentication the authentication object representing the currently authenticated user
+     * @return the list of appointments for the authenticated user
+     */
     private Long extractPersonIdFromAuthentication(Authentication authentication) {
-        // Extrae el personId de la autenticación.
-        // TODO 2 opciones:
-        //  1- hallar el personId por medio del username y asi revolver los Appointments
-        //  2- implementar getAppointmentsByUserman()
-        //authentication.getPrincipal()
-        //Long personIdLoggedPerson = authentication.getPrincipal().;
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        Long personIdLoggedPerson = null;
+        if (username != null) {
+            System.out.println("USERNAME LOGED: " + username);
+            personIdLoggedPerson = personService.getUserByUsername(username).getPerson_id();
+        }
 
-      /*  UserDetails userDetails = (UserDetails) authentication.g
-        String personId = userDetails.getUsername();
-       if(personId != null) {
-           System.out.println(personId);
-       }*/
-        return 2L;
+        return personIdLoggedPerson;
     }
 
     @GetMapping("/appointment/{id}")
