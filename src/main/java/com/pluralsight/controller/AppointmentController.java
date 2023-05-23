@@ -52,6 +52,8 @@ public class AppointmentController {
             return ResponseEntity.ok("Cita médica creada exitosamente.");
         } catch (PersonNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (ClinicNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
