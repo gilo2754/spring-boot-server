@@ -65,15 +65,4 @@ public class Person implements Serializable {
 
     @Column(name = "dateOfBirth")
     private LocalDate dateOfBirth;
-
-    /*
-    public Person(Long person_id, String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth) {
-        this.person_id = person_id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.dateOfBirth = dateOfBirth;
-    }
-    */
 }
