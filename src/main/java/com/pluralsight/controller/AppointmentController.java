@@ -6,6 +6,9 @@ import com.pluralsight.exception.AppointmentNotFoundException;
 import com.pluralsight.exception.PersonNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +21,6 @@ import org.springframework.web.server.ResponseStatusException;
 import com.pluralsight.entity.Clinic;
 import com.pluralsight.entity.Appointment;
 import com.pluralsight.exception.ClinicNotFoundException;
-import com.pluralsight.service.ClinicService;
 import com.pluralsight.service.AppointmentService;
 
 import lombok.AllArgsConstructor;
@@ -30,9 +32,26 @@ public class AppointmentController {
     private AppointmentService appointmentService;
 
     @GetMapping("/appointment")
-    public ResponseEntity<List<Appointment>> getAllTickets() {
-        List<Appointment> list = this.appointmentService.listAppointments();
-        return new ResponseEntity<List<Appointment>>(list, HttpStatus.OK);
+    public ResponseEntity<List<Appointment>> getMyAppointments(Authentication authentication) {
+        Long personId = extractPersonIdFromAuthentication(authentication);
+        List<Appointment> userAppointments = appointmentService.listAppointmentsByPersonId(personId);
+        return ResponseEntity.ok(userAppointments);
+    }
+
+    private Long extractPersonIdFromAuthentication(Authentication authentication) {
+        // Extrae el personId de la autenticación.
+        // TODO 2 opciones:
+        //  1- hallar el personId por medio del username y asi revolver los Appointments
+        //  2- implementar getAppointmentsByUserman()
+        //authentication.getPrincipal()
+        //Long personIdLoggedPerson = authentication.getPrincipal().;
+
+      /*  UserDetails userDetails = (UserDetails) authentication.g
+        String personId = userDetails.getUsername();
+       if(personId != null) {
+           System.out.println(personId);
+       }*/
+        return 2L;
     }
 
     @GetMapping("/appointment/{id}")

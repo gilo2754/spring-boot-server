@@ -22,6 +22,8 @@ public interface AppointmentService {
     Appointment updateAppointment(Appointment appointment);
 
     void deleteAppointment(long id);
+
+    List<Appointment> listAppointmentsByPersonId(Long personId);
 }
 
 

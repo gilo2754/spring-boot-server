@@ -3,6 +3,7 @@ package com.pluralsight.service;
 import com.pluralsight.entity.Appointment;
 import com.pluralsight.entity.Clinic;
 import com.pluralsight.entity.Person;
+import com.pluralsight.enums.PersonType;
 import com.pluralsight.enums.Speciality;
 import com.pluralsight.exception.ClinicNotFoundException;
 import com.pluralsight.exception.PersonNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,12 +42,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         Optional<Person> patientOptional = personRepository.findById(appointment.getPatient().getPerson_id());
         if (patientOptional.isEmpty()) {
-            throw new PersonNotFoundException("El paciente seleccionado no existe.");
+            throw new PersonNotFoundException("El paciente con siguiente ID no encontrado: " + appointment.getPatient().getPerson_id());
         }
 
         Optional<Person> doctorOptional = personRepository.findById(appointment.getDoctor().getPerson_id());
         if (doctorOptional.isEmpty()) {
-         throw new PersonNotFoundException("El doctor seleccionado no existe.");
+         throw new PersonNotFoundException("El doctor con siguiente ID no encontrado: " + appointment.getDoctor().getPerson_id());
      }
 
      Optional<Clinic> clinicOptional = clinicRepository.findById(appointment.getClinic().getClinic_id());
@@ -109,6 +111,22 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Transactional
     public void deleteAppointment(long id) {
         appointmentRepository.deleteById(id);
+    }
+
+    @Override public List<Appointment> listAppointmentsByPersonId(Long personId) {
+        Optional<Person> personOptional = personRepository.findById(personId);
+        if (personOptional.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        Person person = personOptional.get();
+        if (PersonType.DOCTOR.getValue().equals(person.getPersonType())) {
+            return appointmentRepository.findByDoctor(person);
+        } else if ("PATIENT".equals(person.getPersonType())) {
+            return appointmentRepository.findByPatient(person);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
 
