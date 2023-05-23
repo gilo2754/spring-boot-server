@@ -1,5 +1,6 @@
 package com.pluralsight.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pluralsight.enums.PersonType;
 import lombok.*;
 
@@ -33,10 +34,18 @@ public class Person implements Serializable {
   @Column(name = "personType", insertable = false, updatable = false)
   private String personType;// = PersonType.DOCTOR.toString();
 
+    @NotBlank
+    @Column(name = "username")
+    private String username;
 
     @NotBlank
     //@Size(max = 50)
     private String password;
+
+    @JsonIgnore // Exclude the password field from JSON serialization
+    public String getPassword() {
+    return password;
+    }
 
     @NotBlank
     @Column(name = "firstName")

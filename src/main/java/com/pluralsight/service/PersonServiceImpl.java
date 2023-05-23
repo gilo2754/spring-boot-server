@@ -68,6 +68,11 @@ public class PersonServiceImpl implements PersonService {
         return this.personRepository.save(person);
     }
 
+    @Transactional
+    public Person getUserByUsername(String username) {
+        return personRepository.findByUsername(username);
+    }
+
     /*
     @Transactional
     public Doctor createDoctor(Doctor doctor) {

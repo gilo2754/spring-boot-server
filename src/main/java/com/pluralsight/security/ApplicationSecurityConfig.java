@@ -1,7 +1,10 @@
 package com.pluralsight.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,59 +26,39 @@ import java.util.Arrays;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     @Override
-    @Bean
-    protected UserDetailsService userDetailsService() {
-        ApplicationUserRole ADMIN = ApplicationUserRole.ADMIN;
-        ApplicationUserRole USER = ApplicationUserRole.USER;
-        ApplicationUserRole EXTERNAL = ApplicationUserRole.EXTERNAL;
-
-        UserDetails saraStu = User.builder().username("stu").password(passwordEncoder().encode("pss"))//
-            .roles(USER.name())//
-            .authorities(USER.getGrantedAuthorities())//
-            .build();
-
-        UserDetails linadmin =
-            User.builder().username("admin").password(passwordEncoder().encode("admin")).roles(ADMIN.name())
-                // .authorities(ADMIN.getGrantedAuthorities())//
-                .build();
-
-        UserDetails tomext = User.builder().username("tom").password(passwordEncoder().encode("pss"))
-            // .roles(EXTERNAL.name())
-            .authorities(EXTERNAL.getGrantedAuthorities())//
-            .build();
-
-        return new InMemoryUserDetailsManager(linadmin, tomext, saraStu);
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-      /*  http //
-            .csrf().disable()//
-            .authorizeRequests()//
-            .antMatchers("/", "index", "/css/*", "/js/*").permitAll()//
-      */
-        http.csrf().disable()
-                .cors() // Habilitar CORS
-                .and()
+        http
                 .authorizeRequests()
-                .antMatchers("/basicauth/**").authenticated()
-                .anyRequest().permitAll()
+                .antMatchers("/login", "/h2/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/person/add").permitAll() // Permitir la creación de nuevas personas sin autenticación
+
+                .anyRequest().authenticated()
                 .and()
-                .httpBasic();
-
-        // The order of the Matchers matters
-            // Role-base
-            // .antMatchers("/api/v1/**").hasRole(ApplicationUserRole.STUDENT.name())//
-            // .antMatchers("admin/api/v1/**").hasAnyRole(ApplicationUserRole.ADMIN.name())//
-            // Permission-based
-            // .antMatchers(HttpMethod.DELETE, "admin/api/v1/**")
-            // .hasAuthority(ApplicationUserPermision.USER_DELETE.getPermission())//
-            // .antMatchers(HttpMethod.POST, "admin/api/v1/**")
-            // .hasAuthority(ApplicationUserPermision.USER_CREATE.getPermission())//
-
-       // http.csrf().disable();
-        http.headers().frameOptions().disable();
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/me")
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout")
+                .and()
+                .csrf().disable()
+                .headers()
+                .httpStrictTransportSecurity()
+                .includeSubDomains(true)
+                .maxAgeInSeconds(31536000)
+                .and()
+                .frameOptions().sameOrigin();
     }
 
     @Bean

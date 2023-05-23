@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,6 +22,18 @@ public class PersonController {
 
     @Autowired
     private final PasswordEncoder passwordEncoder;
+
+    @GetMapping("/me")
+    public ResponseEntity<Person> getCurrentUser(Authentication authentication) {
+        String username = authentication.getName();
+        Person user = personService.getUserByUsername(username);
+
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+       // user.setPassword("");
+        return ResponseEntity.ok(user);
+    }
 
     //Retrieve people in general, Doctors and Patients using their person_type
     @GetMapping("/people")

@@ -11,4 +11,6 @@ public interface PersonService<P extends Person> {
     Optional<Person> getPersonById(Long personId);
 
     P createPerson(P person);
+
+    Person getUserByUsername(String username);
 }
