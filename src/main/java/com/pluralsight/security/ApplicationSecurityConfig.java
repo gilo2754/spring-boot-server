@@ -34,6 +34,38 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService);
     }
 
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/login", "/h2/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll() // Allowing access to H2 console without authentication
+                .antMatchers("/authenticate").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .csrf().disable()
+                .headers()
+                .httpStrictTransportSecurity()
+                .includeSubDomains(true)
+                .maxAgeInSeconds(31536000)
+                .and()
+                .frameOptions().sameOrigin();
+
+        JwtRequestFilter jwtRequestFilter = new JwtRequestFilter();
+
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+  /*  @Bean
+    public JwtUtil jwtUtil() {
+        return new JwtUtil();
+    }*/
+/*
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
