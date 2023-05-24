@@ -5,14 +5,14 @@ VALUES
 
 -- Patients:
 INSERT INTO person (person_id, person_type, first_name, last_name, email, phone_number, date_of_birth, social_number, username, password)
-VALUES (1, 'PATIENT', 'CalinPatient', 'Menji', 'mail@asd.de', '45678932', '1990-01-02', '012345', 'calinpatient', '$2a$10$ndiBI95O6WeaBRf73od3POdyPJHc/RGASum4HwTtskiOttMSNISfm'),
-       (2, 'PATIENT', 'ConxnPatient', 'Ruiz', 'mail@asd.de', '45678932', '1990-01-02', '012345', 'conxnpatient', '$2a$10$ndiBI95O6WeaBRf73od3POdyPJHc/RGASum4HwTtskiOttMSNISfm');
+VALUES (1, 'PATIENT', 'CalinPatient', 'Menji', 'mail@asd.de', '45678932', '1990-01-02', '012345', 'calinpatient', '$2a$10$NsBJlyMzHNGRdADGhWPKZ.ovl5MDEgtsBMUZYHAigWKE4eASgCpVa'),
+       (2, 'PATIENT', 'ConxnPatient', 'Ruiz', 'mail@asd.de', '45678932', '1990-01-02', '012345', 'conxnpatient', '$2a$10$NsBJlyMzHNGRdADGhWPKZ.ovl5MDEgtsBMUZYHAigWKE4eASgCpVa');
 
 -- Doctors:
 INSERT INTO person (person_id, person_type, first_name, last_name, email, phone_number, date_of_birth, speciality, clinic_id, username, password)
-VALUES (3, 'DOCTOR', 'MarioDoc', 'Menji', 'mail@asd.de', '45678932', '1990-01-02', 'NEUROLOGIA', 1, 'mariodoc', '$2a$10$ndiBI95O6WeaBRf73od3POdyPJHc/RGASum4HwTtskiOttMSNISfm'),
-       (4, 'DOCTOR', 'JuanitoDoc', 'Menji', 'mail@asd.de', '45678932', '1990-01-02', 'NEUROLOGIA', 1, 'juanitodoc', '$2a$10$ndiBI95O6WeaBRf73od3POdyPJHc/RGASum4HwTtskiOttMSNISfm'),
-       (5, 'DOCTOR', 'BobDOC', 'Johnson', 'bobjohnson@example.com', '+123456789', '1985-01-01', 'DERMATOLOGIA', 2, 'bobdoc', '$2a$10$ndiBI95O6WeaBRf73od3POdyPJHc/RGASum4HwTtskiOttMSNISfm');
+VALUES (3, 'DOCTOR', 'MarioDoc', 'Menji', 'mail@asd.de', '45678932', '1990-01-02', 'NEUROLOGIA', 1, 'mariodoc', '$2a$10$NsBJlyMzHNGRdADGhWPKZ.ovl5MDEgtsBMUZYHAigWKE4eASgCpVa'),
+       (4, 'DOCTOR', 'JuanitoDoc', 'Menji', 'mail@asd.de', '45678932', '1990-01-02', 'NEUROLOGIA', 1, 'juanitodoc', '$2a$10$NsBJlyMzHNGRdADGhWPKZ.ovl5MDEgtsBMUZYHAigWKE4eASgCpVa'),
+       (5, 'DOCTOR', 'BobDOC', 'Johnson', 'bobjohnson@example.com', '+123456789', '1985-01-01', 'DERMATOLOGIA', 2, 'bobdoc', '$2a$10$NsBJlyMzHNGRdADGhWPKZ.ovl5MDEgtsBMUZYHAigWKE4eASgCpVa');
 
 
 --Appointments:

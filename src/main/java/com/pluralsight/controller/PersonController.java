@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @RestController
 @RequestMapping("/api/v1")
 @AllArgsConstructor
@@ -22,6 +23,7 @@ public class PersonController {
 
     @Autowired
     private final PasswordEncoder passwordEncoder;
+    private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
 
     @GetMapping("/me")
     public ResponseEntity<Person> getCurrentUser(Authentication authentication) {
@@ -54,16 +56,28 @@ public class PersonController {
     }
 
     @PostMapping("/person/add")
-    public ResponseEntity<Person> createPerson(@RequestBody Person person) {
-        // Set the password for the person (assuming it is passed in the request body)
-        String plainPassword = person.getPassword();
-        String encryptedPassword = passwordEncoder.encode(plainPassword);
-        person.setPassword(encryptedPassword);
+    public ResponseEntity<?> createPerson(@RequestBody Person person) {
+        try {
+            // Set the password for the person (assuming it is passed in the request body)
+            String plainPassword = person.getPassword();
+            String encryptedPassword = passwordEncoder.encode(plainPassword);
+            person.setPassword(encryptedPassword);
 
-        // Save the person
-        Person createdPerson = personService.createPerson(person);
+            // Save the person
+            Person createdPerson = personService.createPerson(person);
 
-        // Return the created person with a status code of 201 (Created)
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdPerson);
+            // Return the created person with a status code of 201 (Created)
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdPerson);
+        } catch (Exception e) {
+            // Handle the exception
+            String errorMessage = "An error occurred while creating the person.";
+
+            // Optionally, you can log the error for debugging purposes
+            logger.error(errorMessage, e);
+
+            // Return an error response to the client
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+        }
     }
+
 }

@@ -38,15 +38,17 @@ public class Person implements Serializable {
     @Column(name = "username")
     private String username;
 
-    @NotBlank
+    //@NotBlank
     //@Size(max = 50)
+    @Column(name = "password")
     private String password;
 
+    /*
     @JsonIgnore // Exclude the password field from JSON serialization
     public String getPassword() {
     return password;
     }
-
+*/
     @NotBlank
     @Column(name = "firstName")
     private String firstName;
