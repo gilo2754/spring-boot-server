@@ -3,8 +3,7 @@ package com.pluralsight.service;
 import com.pluralsight.entity.Appointment;
 import com.pluralsight.entity.Clinic;
 import com.pluralsight.entity.Person;
-import com.pluralsight.enums.PersonType;
-import com.pluralsight.enums.Speciality;
+import com.pluralsight.enums.Role;
 import com.pluralsight.exception.ClinicNotFoundException;
 import com.pluralsight.exception.PersonNotFoundException;
 import com.pluralsight.repository.AppointmentRepository;
@@ -120,9 +119,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
 
         Person person = personOptional.get();
-        if (PersonType.DOCTOR.getValue().equals(person.getPersonType())) {
+        if (Role.DOCTOR.equals(person.getRole())) {
             return appointmentRepository.findByDoctor(person);
-        } else if ("PATIENT".equals(person.getPersonType())) {
+        } else if ("PATIENT".equals(person.getRole())) {
             return appointmentRepository.findByPatient(person);
         } else {
             return Collections.emptyList();

@@ -1,8 +1,6 @@
 package com.pluralsight.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.pluralsight.enums.PersonType;
 import lombok.*;
 
 import javax.persistence.*;
