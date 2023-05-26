@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 @RestController
@@ -26,9 +28,9 @@ public class PersonController {
     private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
 
     @GetMapping("/me")
-    public ResponseEntity<Person> getCurrentUser(Authentication authentication) {
+    public ResponseEntity<Optional> getCurrentUser(Authentication authentication) {
         String username = authentication.getName();
-        Person user = personService.getUserByUsername(username);
+        Optional user = personService.getUserByUsername(username);
 
         if (user == null) {
             return ResponseEntity.notFound().build();
@@ -43,7 +45,7 @@ public class PersonController {
 
         if(person_type !=  null)  {
             // Return people by type
-            List<Person> peopleByType = personService.listPersonByType(person_type);
+            List<Person> peopleByType = personService.listPersonByRole(person_type);
             if (peopleByType.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No people found by this type: " + person_type);
             }

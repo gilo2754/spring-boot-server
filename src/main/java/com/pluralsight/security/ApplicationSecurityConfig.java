@@ -1,5 +1,6 @@
 package com.pluralsight.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,13 +24,11 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
-    //@Autowired
-    private JwtRequestFilter jwtRequestFilter;
 
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -38,36 +37,25 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
-
-    @Bean
-    public JwtRequestFilter jwtRequestFilter() {
-        return new JwtRequestFilter();
-    }
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/login", "/h2/**").permitAll()
+                .antMatchers("/api/v1/authenticate","/api/v1/login", "/h2/**", "/api/v1/people").permitAll()
                 .antMatchers("/h2-console/**").permitAll() // Allowing access to H2 console without authentication
                 .antMatchers(HttpMethod.POST, "/api/v1/person/add").permitAll() // Permitir la creación de nuevas personas sin autenticación
-                .antMatchers("/authenticate").permitAll()
-                .anyRequest().authenticated()
+                //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                //.anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .csrf().disable()
                 .headers()
                 .httpStrictTransportSecurity()
                 .includeSubDomains(true)
@@ -75,49 +63,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .frameOptions().sameOrigin();
 
-        JwtRequestFilter jwtRequestFilter = new JwtRequestFilter();
+        JwtRequestFilter jwtRequestFilter = new JwtRequestFilter(userDetailsService);
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-  /*  @Bean
-    public JwtUtil jwtUtil() {
-        return new JwtUtil();
-    }*/
-/*
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/login", "/h2/**").permitAll()
-                .antMatchers("/h2-console/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/v1/person/add").permitAll() // Permitir la creación de nuevas personas sin autenticación
-
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/me")
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout")
-                .and()
-                .csrf().disable()
-                .headers()
-                .httpStrictTransportSecurity()
-                .includeSubDomains(true)
-                .maxAgeInSeconds(31536000)
-                .and()
-                .frameOptions().sameOrigin();
-    }*/
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200")); // Origen permitido
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:8081"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type"));
+        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "login"));
         configuration.setExposedHeaders(Arrays.asList("authorization"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

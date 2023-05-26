@@ -7,10 +7,10 @@ import java.util.Optional;
 
 public interface PersonService<P extends Person> {
     List<Person> listPerson();
-    List<Person> listPersonByType(String person_type);
+    List<Person> listPersonByRole(String person_type);
     Optional<Person> getPersonById(Long personId);
 
     P createPerson(P person);
 
-    Person getUserByUsername(String username);
+    Optional<Person> getUserByUsername(String username);
 }

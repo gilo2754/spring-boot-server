@@ -45,11 +45,11 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Transactional
-    public List<Person> listPersonByType(String personType) {
-        return personRepository.findByPersonType(personType)
+    public List<Person> listPersonByRole(String role) {
+        return personRepository.findByRole(role)
                 .stream()
                 //avoid NPEs
-                .filter(person -> person != null && person.getPersonType() != null && person.getPersonType().equals(personType))
+                .filter(person -> person != null && person.getRole() != null && person.getRole().equals(role))
                 .collect(Collectors.toList());
     }
 
@@ -69,7 +69,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Transactional
-    public Person getUserByUsername(String username) {
+    public Optional<Person> getUserByUsername(String username) {
         return personRepository.findByUsername(username);
     }
 

@@ -1,10 +1,13 @@
 package com.pluralsight.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.pluralsight.entity.Person;
 import com.pluralsight.exception.AppointmentNotFoundException;
 import com.pluralsight.exception.PersonNotFoundException;
 import com.pluralsight.service.PersonService;
+import org.hibernate.sql.Template;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -53,7 +56,8 @@ public class AppointmentController {
         Long personIdLoggedPerson = null;
         if (username != null) {
             System.out.println("USERNAME LOGED: " + username);
-            personIdLoggedPerson = personService.getUserByUsername(username).getPerson_id();
+            Optional<Person> optionalPerson = personService.getUserByUsername(username);
+            personIdLoggedPerson= optionalPerson.map(Person::getPerson_id).orElse(null);
         }
 
         return personIdLoggedPerson;
