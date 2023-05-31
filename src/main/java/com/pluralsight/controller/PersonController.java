@@ -1,7 +1,7 @@
 package com.pluralsight.controller;
 
-import com.pluralsight.entity.Person;
-import com.pluralsight.service.PersonService;
+import com.pluralsight.entity.User;
+import com.pluralsight.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 @AllArgsConstructor
 public class PersonController {
     @Autowired
-    private PersonService personService;
+    private UserService userService;
 
     @Autowired
     private final PasswordEncoder passwordEncoder;
@@ -30,7 +30,7 @@ public class PersonController {
     @GetMapping("/me")
     public ResponseEntity<Optional> getCurrentUser(Authentication authentication) {
         String username = authentication.getName();
-        Optional user = personService.getUserByUsername(username);
+        Optional user = userService.getUserByUsername(username);
 
         if (user == null) {
             return ResponseEntity.notFound().build();
@@ -41,24 +41,24 @@ public class PersonController {
 
     //Retrieve people in general, Doctors and Patients using their person_type
     @GetMapping("/people")
-    public List<Person> getPeople(@RequestParam(name= "person_type", required = false) String person_type) {
+    public List<User> getPeople(@RequestParam(name= "person_type", required = false) String person_type) {
 
         if(person_type !=  null)  {
             // Return people by type
-            List<Person> peopleByType = personService.listPersonByRole(person_type);
+            List<User> peopleByType = userService.listPersonByRole(person_type);
             if (peopleByType.isEmpty()) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No people found by this type: " + person_type);
             }
             return peopleByType;
         } else {
             // Return list of all clinics
-            List<Person> allPeople = this.personService.listPerson();
+            List<User> allPeople = this.userService.listPerson();
             return allPeople;
         }
     }
 
     @PostMapping("/person/add")
-    public ResponseEntity<?> createPerson(@RequestBody Person person) {
+    public ResponseEntity<?> createPerson(@RequestBody User person) {
         try {
             // Set the password for the person (assuming it is passed in the request body)
             String plainPassword = person.getPassword();
@@ -66,7 +66,7 @@ public class PersonController {
             person.setPassword(encryptedPassword);
 
             // Save the person
-            Person createdPerson = personService.createPerson(person);
+            User createdPerson = userService.createPerson(person);
 
             // Return the created person with a status code of 201 (Created)
             return ResponseEntity.status(HttpStatus.CREATED).body(createdPerson);

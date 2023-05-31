@@ -18,7 +18,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @DiscriminatorValue("DOCTOR")
-public class Doctor extends Person implements Serializable {
+public class Doctor extends User implements Serializable {
 
   //  @Id
    // @GeneratedValue(strategy = GenerationType.AUTO)

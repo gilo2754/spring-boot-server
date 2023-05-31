@@ -16,7 +16,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @ToString
 @DiscriminatorValue("PATIENT")
-public class Patient extends Person implements Serializable {
+public class Patient extends User implements Serializable {
 
     //@Id
     //@GeneratedValue(strategy = GenerationType.AUTO)

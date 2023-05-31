@@ -12,7 +12,6 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Collection;
-import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table//(name = "person")
@@ -24,7 +23,7 @@ import org.springframework.security.core.GrantedAuthority;
 @ToString
 @AllArgsConstructor
 //Probably this entity will be renamed by User
-public class Person implements Serializable, UserDetails {
+public class User implements Serializable, UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -89,22 +88,22 @@ public class Person implements Serializable, UserDetails {
 
   @Override
   public boolean isAccountNonExpired() {
-    return false;
+    return true;
   }
 
   @Override
   public boolean isAccountNonLocked() {
-    return false;
+    return true;
   }
 
   @Override
   public boolean isCredentialsNonExpired() {
-    return false;
+    return true;
   }
 
   @Override
   public boolean isEnabled() {
-    return false;
+    return true;
   }
 
     /*

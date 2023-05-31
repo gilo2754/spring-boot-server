@@ -1,6 +1,6 @@
 package com.pluralsight.repository;
 
-import com.pluralsight.entity.Person;
+import com.pluralsight.entity.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PersonRepository extends CrudRepository<Person, Long> {
+public interface UserRepository extends CrudRepository<User, Long> {
 
-    List<Person> findByRole(String role);
+    List<User> findByRole(String role);
 
-    Optional<Person> findByUsername(String username);
+    Optional<User> findByUsername(String username);
 }

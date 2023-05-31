@@ -2,13 +2,13 @@ package com.pluralsight.service;
 
 import com.pluralsight.entity.Appointment;
 import com.pluralsight.entity.Clinic;
-import com.pluralsight.entity.Person;
+import com.pluralsight.entity.User;
 import com.pluralsight.enums.Role;
 import com.pluralsight.exception.ClinicNotFoundException;
-import com.pluralsight.exception.PersonNotFoundException;
+import com.pluralsight.exception.UserNotFoundException;
 import com.pluralsight.repository.AppointmentRepository;
 import com.pluralsight.repository.ClinicRepository;
-import com.pluralsight.repository.PersonRepository;
+import com.pluralsight.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,12 +24,12 @@ public class AppointmentServiceImpl implements AppointmentService {
     private AppointmentRepository appointmentRepository;
 
     @Autowired
-    private PersonRepository personRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private ClinicRepository clinicRepository;
     @Autowired
-    private PersonService personService;
+    private UserService userService;
 
     @Transactional
     public List<Appointment> listAppointments() {
@@ -39,14 +39,14 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Transactional
     public Appointment createAppointment(Appointment appointment){ //  throws PersonNotFoundException, ClinicNotFoundException {
 
-        Optional<Person> patientOptional = personRepository.findById(appointment.getPatient().getPerson_id());
+        Optional<User> patientOptional = userRepository.findById(appointment.getPatient().getPerson_id());
         if (patientOptional.isEmpty()) {
-            throw new PersonNotFoundException("El paciente con siguiente ID no encontrado: " + appointment.getPatient().getPerson_id());
+            throw new UserNotFoundException("El paciente con siguiente ID no encontrado: " + appointment.getPatient().getPerson_id());
         }
 
-        Optional<Person> doctorOptional = personRepository.findById(appointment.getDoctor().getPerson_id());
+        Optional<User> doctorOptional = userRepository.findById(appointment.getDoctor().getPerson_id());
         if (doctorOptional.isEmpty()) {
-         throw new PersonNotFoundException("El doctor con siguiente ID no encontrado: " + appointment.getDoctor().getPerson_id());
+         throw new UserNotFoundException("El doctor con siguiente ID no encontrado: " + appointment.getDoctor().getPerson_id());
      }
 
      Optional<Clinic> clinicOptional = clinicRepository.findById(appointment.getClinic().getClinic_id());
@@ -113,16 +113,16 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override public List<Appointment> listAppointmentsByPersonId(Long personId) {
-        Optional<Person> personOptional = personRepository.findById(personId);
+        Optional<User> personOptional = userRepository.findById(personId);
         if (personOptional.isEmpty()) {
             return Collections.emptyList();
         }
 
-        Person person = personOptional.get();
-        if (Role.DOCTOR.equals(person.getRole())) {
-            return appointmentRepository.findByDoctor(person);
-        } else if ("PATIENT".equals(person.getRole())) {
-            return appointmentRepository.findByPatient(person);
+        User user = personOptional.get();
+        if (Role.DOCTOR.equals(user.getRole())) {
+            return appointmentRepository.findByDoctor(user);
+        } else if ("PATIENT".equals(user.getRole())) {
+            return appointmentRepository.findByPatient(user);
         } else {
             return Collections.emptyList();
         }
