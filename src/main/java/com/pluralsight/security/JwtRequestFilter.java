@@ -68,12 +68,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String loginUrl = "/api/v1/authenticate"; // Your login URL
         String loginUrl2 = "/api/v1/login"; // Your login URL
+        String getClinicsPeopleURL = "/api/v1/clinic"; // Your login URL
 
         String h2ConsoleUrl = "/h2"; // URL of the H2 console
 
         // Exclude the login URL and H2 console URL from filtering
         String requestUri = request.getRequestURI();
-        return requestUri.equals(loginUrl) ||requestUri.equals(loginUrl2) || requestUri.startsWith(h2ConsoleUrl);
+        return requestUri.equals(loginUrl) ||requestUri.equals(loginUrl2) || requestUri.equals(getClinicsPeopleURL) || requestUri.startsWith(h2ConsoleUrl);
     }
     }
 
