@@ -1,22 +1,20 @@
 package com.pluralsight.security;
 
-import com.pluralsight.exception.PersonNotFoundException;
-import com.pluralsight.repository.PersonRepository;
+import com.pluralsight.exception.UserNotFoundException;
+import com.pluralsight.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final PersonRepository personRepository;
+    private final UserRepository userRepository;
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> personRepository.findByUsername(username)
-                .orElseThrow(() -> new PersonNotFoundException("USer/Person ont found"));
+        return username -> userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("USer/Person ont found"));
         }
 }
