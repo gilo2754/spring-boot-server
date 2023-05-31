@@ -24,27 +24,6 @@ public class JwtService {
     @Value("${jwt.expiration}")
     private Long expiration;
 
-   /* public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return generateToken(claims, userDetails.getUsername());
-    }
-    */
-
-    /*public String generateToken(Map<String, Object> claims, String subject) {
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + expiration);
-
-        SecretKey secretKey = generateSecretKey();
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
-                .signWith(secretKey)
-                .compact();
-    }
-    */
     //generate token for user
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
