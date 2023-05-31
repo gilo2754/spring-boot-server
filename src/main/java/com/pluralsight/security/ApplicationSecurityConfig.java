@@ -37,6 +37,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private JwtService jwtService;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
@@ -63,7 +66,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .frameOptions().sameOrigin();
 
-        JwtRequestFilter jwtRequestFilter = new JwtRequestFilter(userDetailsService);
+        JwtRequestFilter jwtRequestFilter = new JwtRequestFilter(userDetailsService, jwtService);
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
