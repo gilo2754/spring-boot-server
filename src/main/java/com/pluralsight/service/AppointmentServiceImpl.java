@@ -39,14 +39,14 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Transactional
     public Appointment createAppointment(Appointment appointment){ //  throws PersonNotFoundException, ClinicNotFoundException {
 
-        Optional<User> patientOptional = userRepository.findById(appointment.getPatient().getPerson_id());
+        Optional<User> patientOptional = userRepository.findById(appointment.getPatient().getUser_id());
         if (patientOptional.isEmpty()) {
-            throw new UserNotFoundException("El paciente con siguiente ID no encontrado: " + appointment.getPatient().getPerson_id());
+            throw new UserNotFoundException("El paciente con siguiente ID no encontrado: " + appointment.getPatient().getUser_id());
         }
 
-        Optional<User> doctorOptional = userRepository.findById(appointment.getDoctor().getPerson_id());
+        Optional<User> doctorOptional = userRepository.findById(appointment.getDoctor().getUser_id());
         if (doctorOptional.isEmpty()) {
-         throw new UserNotFoundException("El doctor con siguiente ID no encontrado: " + appointment.getDoctor().getPerson_id());
+         throw new UserNotFoundException("El doctor con siguiente ID no encontrado: " + appointment.getDoctor().getUser_id());
      }
 
      Optional<Clinic> clinicOptional = clinicRepository.findById(appointment.getClinic().getClinic_id());
