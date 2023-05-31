@@ -47,7 +47,7 @@ public class AppointmentController {
         if (username != null) {
             System.out.println("USERNAME LOGED: " + username);
             Optional<User> optionalPerson = userService.getUserByUsername(username);
-            personIdLoggedPerson= optionalPerson.map(User::getPerson_id).orElse(null);
+            personIdLoggedPerson= optionalPerson.map(User::getUser_id).orElse(null);
         }
 
         return personIdLoggedPerson;
