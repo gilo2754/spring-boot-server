@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 @Entity
-@Table//(name = "person")
+@Table(name = "_user")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 @Getter
