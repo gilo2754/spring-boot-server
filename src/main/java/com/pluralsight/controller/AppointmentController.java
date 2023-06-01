@@ -26,10 +26,12 @@ public class AppointmentController {
     private AppointmentService appointmentService;
     private UserService userService;
 
+    //TODO: show just the appointments from the actual user
     @GetMapping("/appointment")
-    public ResponseEntity<List<Appointment>> getMyAppointments(Authentication authentication) {
-        Long personId = extractPersonIdFromAuthentication(authentication);
-        List<Appointment> userAppointments = appointmentService.listAppointmentsByPersonId(personId);
+    public ResponseEntity<List<Appointment>> getMyAppointments(){//Authentication authentication) {
+        //Long personId = extractPersonIdFromAuthentication(authentication);
+        //List<Appointment> userAppointments = appointmentService.listAppointmentsByPersonId(personId);
+        List<Appointment> userAppointments =  this.appointmentService.listAppointments();
         return ResponseEntity.ok(userAppointments);
     }
 
