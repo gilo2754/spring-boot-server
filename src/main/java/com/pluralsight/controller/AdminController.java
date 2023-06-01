@@ -24,9 +24,9 @@ public class AdminController {
        return new ResponseEntity<>(specialities, HttpStatus.OK);
    }
 
-    @GetMapping("/")
-    public @ResponseBody String greeting() {
-        return "Hello, World";
+    @GetMapping("/server/status")
+    public ResponseEntity<String> getServerStatus() {
+        return ResponseEntity.ok("Server is running");
     }
 
 }
