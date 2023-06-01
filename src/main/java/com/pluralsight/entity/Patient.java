@@ -29,7 +29,7 @@ public class Patient extends User implements Serializable {
 
     //@JsonIgnore
     @JsonManagedReference
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
     private List<Appointment> appointments;
     /*
     public Patient(Long person_id, String first_name, String last_name, String email, String phone_number, LocalDate dateOfBirth, String social_number) {

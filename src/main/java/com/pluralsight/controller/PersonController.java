@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,8 +30,10 @@ public class PersonController {
     private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
 
     @GetMapping("/me")
-    @PreAuthorize("hasRole('PATIENT')")
-    public ResponseEntity<Optional> getCurrentUser(Authentication authentication) {
+    //@PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<Optional> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         String username = authentication.getName();
         Optional user = userService.getUserByUsername(username);
 
