@@ -69,7 +69,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String loginUrl2 = "/api/v1/login"; // Your login URL
         //FIXME with this we disable JWT/Auth for the path URL
         String pathURL = "/api/v1/"; // Your login URL
-
+        String adminURL = "/admin/api/v1/";
 
         String h2ConsoleUrl = "/h2"; // URL of the H2 console
 
@@ -77,7 +77,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String requestUri = request.getRequestURI();
         return requestUri.equals(loginUrl) ||requestUri.equals(loginUrl2) ||
                 //FIXME and this too:
-                requestUri.startsWith(pathURL) || requestUri.startsWith(h2ConsoleUrl);
+                requestUri.startsWith(pathURL) || requestUri.startsWith(adminURL)||
+        requestUri.startsWith(h2ConsoleUrl);
     }
     }
 
