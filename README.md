@@ -52,7 +52,7 @@ The application exposes the following endpoints for CRUD operations:
 - `GET /admin/api/v1/server/status`: Get the status of the server (admin access required)
 
 ## Future Plans
-
+### Infrastructure
 In the future, the application has the following planned enhancements:
 
 - **Dockerizing the Frontend:** Integrate Angular frontend and containerize it using Docker.
@@ -60,6 +60,23 @@ https://github.com/gilo2754/DocLib2_Angular
 - **Dockerizing the Backend:** Containerize the Spring Boot backend using Docker.
 - **Cloud Hosting:** Deploy the application to AWS or Google Cloud for scalability and reliability.
 - **Object Storage Service:** Utilize a Blob storage service for managing images and other objects.
+
+### Upcoming Features
+
+In the upcoming releases, the application will include the following features:
+
+- **Limited Appointment Creation:** Users will be restricted to creating a limited number of appointments for a specific specialty. This limit will be configurable in the `applications.properties` file.
+
+- **Monthly Appointment Limit:** Users will have a maximum limit on the number of appointments they can create within a month or a defined period. This limit will also be configurable in the `applications.properties` file.
+
+- **Notification System:** The application will implement a notification system to send reminders, confirmations, and cancellations of appointments via SMS, email, or WhatsApp.
+
+- **Google Maps Integration:** Integration with Google Maps will be added to provide location and directions for clinics.
+
+- **Profile Picture Upload:** Users and clinics will have the ability to upload profile pictures for their profiles.
+
+Please note that these features are planned for future development and may not be available in the current version of the application. Stay tuned for updates and enhancements!
+
 
 -> The application will be available at http://localhost:8081.
 
