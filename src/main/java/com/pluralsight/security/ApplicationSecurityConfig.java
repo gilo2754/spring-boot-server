@@ -52,6 +52,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/authenticate","/api/v1/login", "/h2/**", "/api/v1/people").permitAll()
                 .antMatchers("/h2-console/**").permitAll() // Allowing access to H2 console without authentication
                 .antMatchers(HttpMethod.POST, "/api/v1/person/add").permitAll() // Permitir la creación de nuevas personas sin autenticación
+
                 //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 //.anyRequest().authenticated()
                 .and()
@@ -66,6 +67,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .frameOptions().sameOrigin();
 
+                http.cors();
+
         JwtRequestFilter jwtRequestFilter = new JwtRequestFilter(userDetailsService, jwtService);
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
@@ -74,7 +77,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:8081"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "login"));
         configuration.setExposedHeaders(Arrays.asList("authorization"));
