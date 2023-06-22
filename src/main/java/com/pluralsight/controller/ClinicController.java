@@ -51,7 +51,7 @@ public class ClinicController {
     }
 
     @GetMapping(OBJ_BY_ID_PATH)
-    public ResponseEntity<Clinic> getApplication(@PathVariable("id") long id) {
+    public ResponseEntity<Clinic> getClinic(@PathVariable("id") long id) {
         try {
             return new ResponseEntity<Clinic>(this.clinicService.getClinicById(id),
                 HttpStatus.OK);
@@ -61,7 +61,7 @@ public class ClinicController {
     }
 
     @PostMapping(ADD_PATH)
-    public ResponseEntity<Clinic> createApplication(@RequestBody Clinic clinic) {
+    public ResponseEntity<Clinic> createClinic(@RequestBody Clinic clinic) {
         this.clinicService.createClinic(clinic);
         return ResponseEntity.noContent().build();
     }
