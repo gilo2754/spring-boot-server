@@ -70,15 +70,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         //FIXME with this we disable JWT/Auth for the path URL
         String pathURL = "/api/v1/"; // Your login URL
         String adminURL = "/admin/api/v1/";
-
-        String h2ConsoleUrl = "/h2"; // URL of the H2 console
+        String h2Url = "/h2"; // URL of the H2 console
 
         // Exclude the login URL and H2 console URL from filtering
         String requestUri = request.getRequestURI();
         return requestUri.equals(loginUrl) ||requestUri.equals(loginUrl2) ||
                 //FIXME and this too:
                 requestUri.startsWith(pathURL) || requestUri.startsWith(adminURL)||
-        requestUri.startsWith(h2ConsoleUrl);
+                requestUri.startsWith(h2Url);
     }
     }
 

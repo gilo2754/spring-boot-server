@@ -49,8 +49,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/authenticate","/api/v1/login", "/h2/**", "/api/v1/people").permitAll()
-                .antMatchers("/h2-console/**").permitAll() // Allowing access to H2 console without authentication
+                .antMatchers("/api/v1/authenticate","/api/v1/login", "/api/v1/people").permitAll()
+                .antMatchers("/h2-console/**", "/h2/**").permitAll() // Allowing access to H2 console without authentication
                 .antMatchers(HttpMethod.POST, "/api/v1/person/add").permitAll() // Permitir la creación de nuevas personas sin autenticación
 
                 //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
