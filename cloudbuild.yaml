@@ -8,3 +8,5 @@ steps:
       - 'PROJECT_ID=doctolib-391316'
       - 'CLOUDSDK_CORE_DISABLE_PROMPTS=1'
 
+options:
+  logging: CLOUD_LOGGING_ONLY
