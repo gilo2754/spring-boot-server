@@ -1,0 +1,9 @@
+steps:
+  - name: 'gcr.io/cloud-builders/mvn'
+    args: ['clean', 'install']
+
+  - name: 'gcr.io/cloud-builders/mvn'
+    args: ['appengine:deploy']
+    env:
+      - 'PROJECT_ID=doctolib-391316'
+      - 'CLOUDSDK_CORE_DISABLE_PROMPTS=1'
