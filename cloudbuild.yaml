@@ -7,3 +7,6 @@ steps:
     env:
       - 'PROJECT_ID=doctolib-391316'
       - 'CLOUDSDK_CORE_DISABLE_PROMPTS=1'
+
+options:
+    logsBucket: _Default # Specify the Cloud Storage bucket where build logs will be stored
