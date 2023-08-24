@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BasicAuthController {
     @GetMapping("hi")
     public String basicAuth() {
-        return "{ \"message\": \"Hello, world!\" }";
+        return ("Hello, world!");
 
     }
 }
