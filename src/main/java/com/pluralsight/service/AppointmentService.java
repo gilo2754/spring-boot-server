@@ -24,6 +24,8 @@ public interface AppointmentService {
     void deleteAppointment(long id);
 
     List<Appointment> listAppointmentsByPersonId(Long personId);
+
+    List<Appointment> findByClinic(Long clinicId);
 }
 
 

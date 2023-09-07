@@ -83,4 +83,19 @@ public class AppointmentController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/appointment/clinic/{clinicId}")
+    public ResponseEntity<?> getAppointmentsByClinic(@PathVariable Long clinicId) {
+        List<Appointment> appointments = appointmentService.findByClinic(clinicId);
+
+        if (appointments.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No appointments found for clinic with ID: " + clinicId);
+        } else {
+            return ResponseEntity.ok(appointments);
+        }
+    }
+
+
+
+
 }

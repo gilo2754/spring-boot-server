@@ -28,6 +28,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Autowired
     private ClinicRepository clinicRepository;
+
     @Autowired
     private UserService userService;
 
@@ -126,6 +127,17 @@ public class AppointmentServiceImpl implements AppointmentService {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public List<Appointment> findByClinic(Long clinicId) {
+        Optional<Clinic> clinicOptional = clinicRepository.findById(clinicId);
+        if (clinicOptional.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        Clinic clinic = clinicOptional.get();
+        return appointmentRepository.findByClinic(clinic);
     }
 
 
