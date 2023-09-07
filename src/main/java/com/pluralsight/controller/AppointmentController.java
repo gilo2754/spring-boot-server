@@ -65,7 +65,7 @@ public class AppointmentController {
         }
     }
 
-    @PostMapping("/appointment/add")
+    @PostMapping("/appointment/create")
     public ResponseEntity<String> createAppointment(@RequestBody Appointment appointment) {
         try {
             appointmentService.createAppointment(appointment);
@@ -76,6 +76,8 @@ public class AppointmentController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+
 
     @DeleteMapping("/appointment/{id}")
     public ResponseEntity<Clinic> deteleAppointment(@PathVariable("id") long id) {
