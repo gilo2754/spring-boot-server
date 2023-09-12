@@ -2,7 +2,9 @@ package com.pluralsight.service;
 
 import com.pluralsight.entity.Appointment;
 import com.pluralsight.entity.Clinic;
+import com.pluralsight.entity.Patient;
 import com.pluralsight.entity.User;
+import com.pluralsight.enums.AppointmentStatus;
 import com.pluralsight.enums.Role;
 import com.pluralsight.exception.ClinicNotFoundException;
 import com.pluralsight.exception.UserNotFoundException;
@@ -138,6 +140,33 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         Clinic clinic = clinicOptional.get();
         return appointmentRepository.findByClinic(clinic);
+    }
+
+    @Override
+    public Appointment reserveAppointment(Long appointmentId, Long patientId) throws Exception {
+        // Buscar la cita por su ID
+        Optional<Appointment> optionalAppointment = appointmentRepository.findById(appointmentId);
+        if (optionalAppointment.isEmpty()) {
+            throw new Exception("Cita no encontrada");
+        }
+
+        Appointment appointment = optionalAppointment.get();
+
+        // Verificar si la cita está disponible
+        if (appointment.getAppointment_status() != AppointmentStatus.PENDING) {
+            throw new Exception("La cita no está disponible para reserva");
+        }
+
+        // Asignar al paciente a la cita
+        // Aquí debes tener una referencia al paciente por su ID y asignarlo a la cita
+        // Por ejemplo, puedes buscar al paciente en la base de datos
+        // y luego asignarlo a la cita
+
+        // Actualizar el estado de la cita a reservada
+        appointment.setAppointment_status(AppointmentStatus.RESERVED);
+        appointmentRepository.save(appointment);
+
+        return appointment;
     }
 
 
