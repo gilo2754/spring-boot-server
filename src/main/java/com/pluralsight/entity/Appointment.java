@@ -4,7 +4,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pluralsight.enums.AppointmentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

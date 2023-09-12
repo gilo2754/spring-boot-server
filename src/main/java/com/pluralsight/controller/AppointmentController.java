@@ -3,6 +3,7 @@ package com.pluralsight.controller;
 import com.pluralsight.entity.Appointment;
 import com.pluralsight.entity.Clinic;
 import com.pluralsight.entity.User;
+import com.pluralsight.exception.AppointmentNotAvailableException;
 import com.pluralsight.exception.AppointmentNotFoundException;
 import com.pluralsight.exception.ClinicNotFoundException;
 import com.pluralsight.exception.UserNotFoundException;
@@ -35,13 +36,37 @@ public class AppointmentController {
         return ResponseEntity.ok(userAppointments);
     }
 
-    /**
-     * Extracts the personId from the authentication.
-     * Finds the personId by username and returns the appointments from this user.
-     *
-     * @param authentication the authentication object representing the currently authenticated user
-     * @return the list of appointments for the authenticated user
-     */
+    @PostMapping("/reserve") //FIXME
+    public ResponseEntity<String> reserveAppointment(@RequestBody long appointmentId, @RequestBody long patientId) {
+        try {
+            // Lógica para verificar la disponibilidad y reservar la cita
+            appointmentService.reserveAppointment(appointmentId, patientId);
+            return ResponseEntity.ok("Cita reservada con éxito");
+        } catch (AppointmentNotAvailableException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La cita no está disponible");
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Paciente no encontrado");
+        } catch (AppointmentNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cita no encontrada");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor");
+        }
+    }
+
+
+
+
+
+
+
+
+/**
+ * Extracts the personId from the authentication.
+ * Finds the personId by username and returns the appointments from this user.
+ *
+ * @param authentication the authentication object representing the currently authenticated user
+ * @return the list of appointments for the authenticated user
+ */
     private Long extractPersonIdFromAuthentication(Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String username = userDetails.getUsername();
@@ -96,8 +121,5 @@ public class AppointmentController {
             return ResponseEntity.ok(appointments);
         }
     }
-
-
-
 
 }

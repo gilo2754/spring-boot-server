@@ -1,9 +1,7 @@
 package com.pluralsight.service;
 
 import com.pluralsight.entity.Appointment;
-import com.pluralsight.enums.Speciality;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AppointmentService {
@@ -26,6 +24,8 @@ public interface AppointmentService {
     List<Appointment> listAppointmentsByPersonId(Long personId);
 
     List<Appointment> findByClinic(Long clinicId);
+
+    Appointment reserveAppointment(Long appointmentId, Long patientId) throws Exception;
 }
 
 

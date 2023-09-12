@@ -3,10 +3,11 @@ package com.pluralsight.controller;
 import com.pluralsight.entity.User;
 import com.pluralsight.service.UserService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,9 +16,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 @RestController
 @RequestMapping("/api/v1")
 @AllArgsConstructor
@@ -29,8 +27,27 @@ public class PersonController {
     private final PasswordEncoder passwordEncoder;
     private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
 
-    @GetMapping("/me")
-    //@PreAuthorize("hasRole('PATIENT')")
+   /* @GetMapping("/info")
+    public ResponseEntity<?> getUserInfo(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            // Verificar los roles y permisos del usuario autenticado
+            if (authentication.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_DOCTOR"))) {
+                // El usuario tiene el rol de doctor, permite el acceso a la información
+                // ...
+            } else {
+                // El usuario no tiene el permiso necesario, devuelve un 403
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permiso para acceder a esta información. 403");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Debes iniciar sesión para acceder a esta información. 401");
+        }
+        return null;
+    }
+*/
+
+     @GetMapping("/me")
+    //@PreAuthorize("hasRole('DOCTOR')")
+    //@PreAuthorize("hasAuthority('doctor:read')")
     public ResponseEntity<Optional> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

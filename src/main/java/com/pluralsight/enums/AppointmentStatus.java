@@ -6,5 +6,6 @@ public enum AppointmentStatus {
     CANCELLED_BY_PATIENT,
     CANCELLED_BY_DOCTOR,
     COMPLETED,
+    RESERVED,
     AVALIABLE
 }
