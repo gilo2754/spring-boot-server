@@ -8,6 +8,7 @@ import com.pluralsight.exception.AppointmentNotFoundException;
 import com.pluralsight.exception.ClinicNotFoundException;
 import com.pluralsight.exception.UserNotFoundException;
 import com.pluralsight.service.AppointmentService;
+import com.pluralsight.service.ClinicService;
 import com.pluralsight.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ import java.util.Optional;
 public class AppointmentController {
     private AppointmentService appointmentService;
     private UserService userService;
+    private ClinicService clinicService;
 
     //TODO: show just the appointments from the actual user
     @GetMapping("/appointment")
@@ -53,7 +55,49 @@ public class AppointmentController {
         }
     }
 
+    /**
+     * To reserve appointments there is the endpoint /reserve
+     *
+     * @param updatedAppointment
+     * @return
+     */
+    @PutMapping("update")
+    public ResponseEntity<?> updateAppointment(@RequestBody Appointment updatedAppointment) {
+        // Check if the appointmentId is present in the updatedAppointment
+        Long appointmentId = updatedAppointment.getAppointment_id();
 
+        if (appointmentId == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Appointment ID is required in the request body");
+        }
+
+        // Try to fetch the appointment by ID
+        Appointment existingAppointment = appointmentService.getAppointmentById(appointmentId);
+
+        if (existingAppointment == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Appointment not found");
+        }
+
+        // Check if the clinic exists
+        Clinic clinic = clinicService.getClinicById(updatedAppointment.getClinic().getClinic_id());
+        if (clinic == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Clinic not found");
+        }
+
+        // Check if the doctor exists
+        Optional doctor = userService.getPersonById(updatedAppointment.getDoctor().getUser_id());
+        if (doctor == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Doctor not found");
+        }
+
+        // Perform validation and update logic
+        Appointment updated = appointmentService.updateAppointment(updatedAppointment);
+
+        if (updated == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update appointment");
+        }
+
+        return ResponseEntity.ok(updated);
+    }
 
 
 
