@@ -15,7 +15,7 @@ import static com.pluralsight.security.Permission.*;
 public enum Role {
     USER(Collections.emptySet()),
     DOCTOR(
-            Set.of(
+            Set.of(/*
                     DOCTOR_READ,
                     DOCTOR_UPDATE,
                     DOCTOR_DELETE,
@@ -23,15 +23,15 @@ public enum Role {
                     PATIENT_READ,
                     PATIENT_UPDATE,
                     PATIENT_DELETE,
-                    PATIENT_CREATE
+                    PATIENT_CREATE*/
             )
     ),
     PATIENT(
             Set.of(
-                    PATIENT_READ,
+                   /* PATIENT_READ
                     PATIENT_UPDATE,
                     PATIENT_DELETE,
-                    PATIENT_CREATE
+                    PATIENT_CREATE*/
             )
     )
 

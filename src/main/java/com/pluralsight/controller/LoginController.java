@@ -41,7 +41,6 @@ public class LoginController {
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
-
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 
