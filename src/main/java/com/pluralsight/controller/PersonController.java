@@ -1,6 +1,7 @@
 package com.pluralsight.controller;
 
 import com.pluralsight.entity.User;
+import com.pluralsight.repository.UserRepository;
 import com.pluralsight.service.UserService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -8,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +22,9 @@ import java.util.Optional;
 public class PersonController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private final PasswordEncoder passwordEncoder;
@@ -45,10 +48,7 @@ public class PersonController {
     }
 */
 
-     @GetMapping("/me")
-    //@PreAuthorize("hasRole('DOCTOR')")
-    //@PreAuthorize("hasAuthority('doctor:read')")
-    public ResponseEntity<Optional> getCurrentUser() {
+      /*
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         String username = authentication.getName();
@@ -58,8 +58,21 @@ public class PersonController {
             return ResponseEntity.notFound().build();
         }
        // user.setPassword("");
-        return ResponseEntity.ok(user);
-    }
+
+        return ResponseEntity.ok(user);*/
+    //@PreAuthorize("hasRole('DOCTOR')")
+    //@PreAuthorize("hasAuthority('doctor:read')")
+      @GetMapping("/user-info")
+      public ResponseEntity<Optional<User>> getUserInfo(@RequestHeader(name = "Authorization") String jwtToken) {
+          String token = jwtToken.substring(7); // Elimina el prefijo "Bearer "
+          String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+          Optional<User> user = userRepository.findByUsername(username);
+
+          if (user != null) {
+              return ResponseEntity.ok(user); // Devuelve la información del usuario como JSON
+          } else {
+              return ResponseEntity.notFound().build(); // Devuelve una respuesta 404 si el usuario no se encuentra
+          }    }
 
     //Retrieve people in general, Doctors and Patients using their person_type
     @GetMapping("/people")
