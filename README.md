@@ -1,3 +1,6 @@
+## Frontend 
+The Repo is here https://github.com/gilo2754/doctolib2_React with the respective documentation.
+
 # Spring Boot for medical appointments
 
 This is a Spring Boot application that provides CRUD endpoints for managing various entities. It utilizes the following technologies and frameworks:
@@ -39,6 +42,7 @@ The application exposes the following endpoints for CRUD operations:
 - `GET /people`: Retrieve all users
 - `GET /people?role=DOCTOR`: Retrieve all doctors
 - `GET /people?role=PATIENT`: Retrieve all patients
+-`GET /person/user-info`: Retrieve the information from the logged in user using the JWT.
 - `GET /user/{id}`: Retrieve a user by ID
 - `POST /user/add`: Create a new user
 
@@ -52,13 +56,16 @@ The application exposes the following endpoints for CRUD operations:
 - `GET /admin/api/v1/server/status`: Get the status of the server (admin access required)
 
 ## Future Plans
+### Documentation 
+Tryout Swagger to automatically document the API.
+
 ### Infrastructure
 In the future, the application has the following planned enhancements:
 
 - **Dockerizing the Frontend:** Integrate Angular frontend and containerize it using Docker.
 https://github.com/gilo2754/DocLib2_Angular
 - **Dockerizing the Backend:** Containerize the Spring Boot backend using Docker.
-- **Cloud Hosting:** Deploy the application to AWS or Google Cloud for scalability and reliability.
+- **Cloud Hosting:** Deploy the application to Heroku, AWS or Google Cloud for scalability and reliability.
 - **Object Storage Service:** Utilize a Blob storage service for managing images and other objects.
 
 ### Upcoming Features
@@ -69,7 +76,7 @@ In the upcoming releases, the application will include the following features:
 
 - **Monthly Appointment Limit:** Users will have a maximum limit on the number of appointments they can create within a month or a defined period. This limit will also be configurable in the `applications.properties` file.
 
-- **Notification System:** The application will implement a notification system to send reminders, confirmations, and cancellations of appointments via SMS, email, or WhatsApp.
+- **Notification System:** The application will implement a notification system to send reminders, confirmations, and cancellations of appointments via SMS, email, or WhatsApp API.
 
 - **Google Maps Integration:** Integration with Google Maps will be added to provide location and directions for clinics.
 
