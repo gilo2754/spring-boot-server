@@ -13,7 +13,11 @@ import static com.pluralsight.security.Permission.*;
 
 @RequiredArgsConstructor
 public enum Role {
-    USER(Collections.emptySet()),
+    USER(
+            Set.of(
+
+            )
+    ),
     DOCTOR(
             Set.of(/*
                     DOCTOR_READ,

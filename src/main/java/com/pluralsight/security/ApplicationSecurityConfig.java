@@ -52,9 +52,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/authenticate","/api/v1/login", "/api/v1/people").permitAll()
                 .antMatchers("/h2-console/**", "/h2/**").permitAll() // Allowing access to H2 console without authentication
                 .antMatchers(HttpMethod.POST, "/api/v1/person/add").permitAll() // Permitir la creación de nuevas personas sin autenticación
+                //.antMatchers("/api/user-info").authenticated()
+                //.anyRequest().authenticated()
 
                 //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                //.anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()

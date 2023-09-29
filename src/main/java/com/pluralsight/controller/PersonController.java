@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @RestController
@@ -95,6 +96,44 @@ public class PersonController {
     @PostMapping("/person/add")
     public ResponseEntity<?> createPerson(@RequestBody User person) {
         try {
+            // Validar que se proporcionen todos los campos requeridos
+            List<String> missingFields = new ArrayList<>();
+
+            if (person.getUsername() == null) {
+                missingFields.add("username");
+            }
+            if (person.getPassword() == null) {
+                missingFields.add("password");
+            }
+            if (person.getFirstName() == null) {
+                missingFields.add("firstName");
+            }
+            if (person.getLastName() == null) {
+                missingFields.add("lastName");
+            }
+            if (person.getEmail() == null) {
+                missingFields.add("email");
+            }
+            if (person.getPhoneNumber() == null) {
+                missingFields.add("phoneNumber");
+            }
+            if (person.getDateOfBirth() == null) {
+                missingFields.add("dateOfBirth");
+            }
+           /* if (person.getSocial_number() == null) {
+                missingFields.add("social_number");
+            }*/
+            if (person.getRole() == null) {
+                missingFields.add("role");
+            }
+
+            if (!missingFields.isEmpty()) {
+                // Construir un mensaje de error que enumere los campos faltantes
+                String errorMessage = "Faltan campos obligatorios. Asegúrese de proporcionar los siguientes campos: "
+                        + String.join(", ", missingFields);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+            }
+
             // Set the password for the person (assuming it is passed in the request body)
             String plainPassword = person.getPassword();
             String encryptedPassword = passwordEncoder.encode(plainPassword);
@@ -116,5 +155,6 @@ public class PersonController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
         }
     }
+
 
 }
