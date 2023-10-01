@@ -13,7 +13,9 @@ import com.pluralsight.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -128,12 +130,23 @@ public class AppointmentController {
     }
 
     @GetMapping("/clinic/{clinicId}")
+//    @PreAuthorize("hasRole('ROLE_DOCTOR')")
     public ResponseEntity<?> getAppointmentsByClinic(@PathVariable Long clinicId) {
+        // TODO Verificar si el usuario tiene el rol "DOCTOR"
+      /*  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean hasDoctorRole = authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_DOCTOR"));
+
+        if (!hasDoctorRole) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("No tienes permisos para acceder a este recurso.");
+        }
+*/
         List<Appointment> appointments = appointmentService.findByClinic(clinicId);
 
         if (appointments.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No appointments found for clinic with ID: " + clinicId);
+                    .body("No se encontraron citas para la clínica con ID: " + clinicId);
         } else {
             return ResponseEntity.ok(appointments);
         }
