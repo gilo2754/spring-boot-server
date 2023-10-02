@@ -124,7 +124,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         User user = personOptional.get();
         if (Role.DOCTOR.equals(user.getRole())) {
             return appointmentRepository.findByDoctor(user);
-        } else if ("PATIENT".equals(user.getRole())) {
+        } else if (Role.PATIENT.equals(user.getRole())) {
             return appointmentRepository.findByPatient(user);
         } else {
             return Collections.emptyList();

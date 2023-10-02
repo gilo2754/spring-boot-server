@@ -13,33 +13,9 @@ import static com.pluralsight.security.Permission.*;
 
 @RequiredArgsConstructor
 public enum Role {
-    USER(
-            Set.of(
-
-            )
-    ),
-    DOCTOR(
-            Set.of(/*
-                    DOCTOR_READ,
-                    DOCTOR_UPDATE,
-                    DOCTOR_DELETE,
-                    DOCTOR_CREATE,
-                    PATIENT_READ,
-                    PATIENT_UPDATE,
-                    PATIENT_DELETE,
-                    PATIENT_CREATE*/
-            )
-    ),
-    PATIENT(
-            Set.of(
-                   /* PATIENT_READ
-                    PATIENT_UPDATE,
-                    PATIENT_DELETE,
-                    PATIENT_CREATE*/
-            )
-    )
-
-    ;
+    USER(Collections.emptySet()),
+    DOCTOR(Collections.singleton(DOCTOR_READ)),
+    PATIENT(Collections.singleton(PATIENT_READ));
 
     @Getter
     private final Set<Permission> permissions;

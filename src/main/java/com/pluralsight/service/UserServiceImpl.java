@@ -1,6 +1,7 @@
 package com.pluralsight.service;
 
 import com.pluralsight.entity.User;
+import com.pluralsight.enums.Role;
 import com.pluralsight.exception.UserNotFoundException;
 import com.pluralsight.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +46,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public List<User> listPersonByRole(String role) {
-        return userRepository.findByRole(role)
+    public List<User> listPersonByRole(Role role) {
+        return userRepository.findByRole(String.valueOf(role))
                 .stream()
                 //avoid NPEs
                 .filter(person -> person != null && person.getRole() != null && person.getRole().equals(role))

@@ -43,10 +43,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         //String pathURL = "/api/v1/"; // Your login URL
         String adminURL = "/admin/api/v1/";
         String h2Url = "/h2"; // URL of the H2 console
+        String h2UrlConsole = "/h2-console"; // URL of the H2 console
+
 
         // Exclude the login URL and H2 console URL from filtering
         String requestUri = request.getRequestURI();
         return requestUri.equals(register) ||requestUri.equals(loginUrl2) ||
+                requestUri.startsWith(h2UrlConsole) ||
                 //FIXME and this too:
                // requestUri.startsWith(pathURL) ||
                 requestUri.startsWith(adminURL)||
