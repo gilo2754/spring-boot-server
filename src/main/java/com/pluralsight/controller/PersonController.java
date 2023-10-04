@@ -130,10 +130,10 @@ public class PersonController {
            /* if (person.getSocial_number() == null) {
                 missingFields.add("social_number");
             }*/
-            if (person.getRole() == null) {
+           /* if (person.getRole() == null) {
                 missingFields.add("role");
             }
-
+*/
             if (!missingFields.isEmpty()) {
                 // Construir un mensaje de error que enumere los campos faltantes
                 String errorMessage = "Faltan campos obligatorios. Asegúrese de proporcionar los siguientes campos: "
