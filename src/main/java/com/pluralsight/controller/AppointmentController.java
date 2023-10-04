@@ -9,13 +9,12 @@ import com.pluralsight.exception.ClinicNotFoundException;
 import com.pluralsight.exception.UserNotFoundException;
 import com.pluralsight.service.AppointmentService;
 import com.pluralsight.service.ClinicService;
+import com.pluralsight.service.EmailService;
 import com.pluralsight.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,6 +29,7 @@ public class AppointmentController {
     private AppointmentService appointmentService;
     private UserService userService;
     private ClinicService clinicService;
+    private EmailService emailService;
 
     //TODO: show just the appointments from the actual user
     @GetMapping
@@ -115,7 +115,29 @@ public class AppointmentController {
     public ResponseEntity<String> createAppointment(@RequestBody Appointment appointment) {
         try {
             appointmentService.createAppointment(appointment);
-            return ResponseEntity.ok("Cita médica creada exitosamente.");
+            Clinic clinicDetails =
+            clinicService.getClinicById(appointment.getClinic().getClinic_id());
+            Optional<User> doctorDetails = userService.getPersonById(appointment.getDoctor().getUser_id());
+            Optional<User> patientDetails = userService.getPersonById(appointment.getPatient().getUser_id());
+
+            //var patientDetails = userService.getPersonById(appointment.getPatient().getUser_id());
+            // Envía un correo electrónico después de crear la cita médica
+            String destinatario = "MAIL@gmail.com";
+            String asunto = "Nueva cita médica creada para";
+            String doctorFirstName = doctorDetails.get().getFirstName();
+            String patientirstName = patientDetails.get().getFirstName();
+            String clinicName = clinicDetails.getClinic_name();
+
+            String mensaje = "Se ha creado una nueva cita médica para^"+ patientirstName + ". Detalles:\n\n" +
+                    "Fecha y hora: " + appointment.getStartTime() + "\n" +
+                    "Médico: " + doctorFirstName + "\n" +
+                    "Clinica: " + clinicName + "\n" +
+                    "Paciente: " + patientirstName;
+            // TODO completar con detalles reales de la cita
+            // TODO: mover la la creacion del E-Mail a otra clase?
+            emailService.enviarCorreo(destinatario, asunto, mensaje);
+
+            return ResponseEntity.ok("Cita médica creada exitosamente para "+ patientirstName);
         } catch (UserNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (ClinicNotFoundException e) {
