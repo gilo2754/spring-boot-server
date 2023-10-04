@@ -1,6 +1,7 @@
 package com.pluralsight.controller;
 
 import com.pluralsight.entity.User;
+import com.pluralsight.enums.Role;
 import com.pluralsight.repository.UserRepository;
 import com.pluralsight.service.UserService;
 import lombok.AllArgsConstructor;
@@ -75,23 +76,29 @@ public class PersonController {
               return ResponseEntity.notFound().build(); // Devuelve una respuesta 404 si el usuario no se encuentra
           }    }
 
-    //Retrieve people in general, Doctors and Patients using their person_type
+    //Retrieve people in general, Doctors and Patients using their role
     @GetMapping("/people")
-    public List<User> getPeople(@RequestParam(name= "person_type", required = false) String person_type) {
+    public List<User> getPeople(@RequestParam(name= "role", required = false) String role) {
 
-        if(person_type !=  null)  {
-            // Return people by type
-            List<User> peopleByType = userService.listPersonByRole(person_type);
-            if (peopleByType.isEmpty()) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No people found by this type: " + person_type);
+        if (role !=  null)  {
+            try {
+                Role enumRole = Role.valueOf(role.toUpperCase()); // Convierte el nombre en un valor de enumerado
+                // Continúa con el procesamiento usando enumRole
+                List<User> peopleByRole = userService.listPersonByRole(enumRole);
+                if (peopleByRole.isEmpty()) {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No people found by this role: " + role);
+                }
+                return peopleByRole;
+            } catch (IllegalArgumentException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid role: " + role);
             }
-            return peopleByType;
         } else {
-            // Return list of all clinics
+            // Return list of all users
             List<User> allPeople = this.userService.listPerson();
             return allPeople;
         }
     }
+
 
     @PostMapping("/person/add")
     public ResponseEntity<?> createPerson(@RequestBody User person) {
@@ -123,10 +130,10 @@ public class PersonController {
            /* if (person.getSocial_number() == null) {
                 missingFields.add("social_number");
             }*/
-            if (person.getRole() == null) {
+           /* if (person.getRole() == null) {
                 missingFields.add("role");
             }
-
+*/
             if (!missingFields.isEmpty()) {
                 // Construir un mensaje de error que enumere los campos faltantes
                 String errorMessage = "Faltan campos obligatorios. Asegúrese de proporcionar los siguientes campos: "

@@ -39,7 +39,7 @@ public class User implements Serializable, UserDetails {
   private String personType;// = PersonType.DOCTOR.toString();
 */
   @Enumerated(EnumType.STRING)
-  @Column(name = "role", insertable = false, updatable = false)
+  @Column(name = "role", updatable = false, insertable = false)
   private Role role;
 
   @NotBlank

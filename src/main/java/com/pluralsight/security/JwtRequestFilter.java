@@ -1,11 +1,13 @@
 package com.pluralsight.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.Ordered;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.core.annotation.Order;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -21,6 +23,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     final private JwtService jwtService;
 
     @Override
+    @Order(Ordered.HIGHEST_PRECEDENCE)
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
@@ -43,14 +46,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         //String pathURL = "/api/v1/"; // Your login URL
         String adminURL = "/admin/api/v1/";
         String h2Url = "/h2"; // URL of the H2 console
+        String h2Test_do = "/h2/test.do"; // Trying to fix H2. worked?
 
-        // Exclude the login URL and H2 console URL from filtering
+
+        // Exclude the login URL and H2 URL from filtering
         String requestUri = request.getRequestURI();
-        return requestUri.equals(register) ||requestUri.equals(loginUrl2) ||
+        return requestUri.equals(register) ||requestUri.equals(loginUrl2)
+                || requestUri.equals(h2Test_do)
                 //FIXME and this too:
                // requestUri.startsWith(pathURL) ||
-                requestUri.startsWith(adminURL)||
-                requestUri.startsWith(h2Url);
+                || requestUri.startsWith(adminURL)
+                || requestUri.equals(h2Url);
     }
     }
 
