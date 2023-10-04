@@ -31,3 +31,7 @@ logs/
 
 # Environment variables
 .env
+
+# Secrets
+jwt.secretKey
+
