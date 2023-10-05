@@ -1,17 +1,6 @@
 version: '3.1'
 
 services:
-  db:
-    image: 'postgres:13.1-alpine'
-    restart: always
-    ports:
-      - "5432:5432"
-    container_name: db
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=doctolib2db
-
   app:
     image: 'app:latest'
     ports:
@@ -20,10 +9,6 @@ services:
       context: src/main/docker
       dockerfile: Dockerfile
     container_name: app
-    depends_on:
-      - db
+
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/compose-postgres
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=password
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - JWT_SECRET=${JWT_SECRET}
