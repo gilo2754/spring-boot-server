@@ -22,6 +22,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @ToString
 @AllArgsConstructor
+@DiscriminatorValue("USER")
 //Probably this entity will be renamed by User
 public class User implements Serializable, UserDetails {
 
