@@ -72,7 +72,7 @@ public class Clinic implements Serializable {
     // Avoiding circular reference
     @JsonIgnore
     @OneToMany(mappedBy = "clinic_id")
-    private List<Doctor> doctors;
+    private List<User> doctors;
 
 
 

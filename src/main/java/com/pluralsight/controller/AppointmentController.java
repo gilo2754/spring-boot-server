@@ -122,7 +122,7 @@ public class AppointmentController {
 
             //var patientDetails = userService.getPersonById(appointment.getPatient().getUser_id());
             // Envía un correo electrónico después de crear la cita médica
-            String destinatario = "MAIL@gmail.com";
+            String destinatario = "gilo2754@gmail.com";
             String asunto = "Nueva cita médica creada para";
             String doctorFirstName = doctorDetails.get().getFirstName();
             String patientirstName = patientDetails.get().getFirstName();

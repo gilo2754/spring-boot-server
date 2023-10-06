@@ -36,12 +36,12 @@ public class Appointment implements Serializable {
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "patient_id")
-    private Patient patient;
+    private User patient;
 
     //@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "doctor_id")
-    private Doctor doctor;
+    private User doctor;
 
     @NotNull
     @Column(name = "start_time")

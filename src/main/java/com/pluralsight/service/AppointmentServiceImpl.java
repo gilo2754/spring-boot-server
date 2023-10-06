@@ -2,7 +2,6 @@ package com.pluralsight.service;
 
 import com.pluralsight.entity.Appointment;
 import com.pluralsight.entity.Clinic;
-import com.pluralsight.entity.Patient;
 import com.pluralsight.entity.User;
 import com.pluralsight.enums.AppointmentStatus;
 import com.pluralsight.enums.Role;
