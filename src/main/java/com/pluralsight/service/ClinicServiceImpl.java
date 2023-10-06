@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.pluralsight.entity.Doctor;
+import com.pluralsight.entity.User;
 import com.pluralsight.enums.Speciality;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -86,7 +86,7 @@ public class ClinicServiceImpl implements ClinicService {
     }
 
     @Transactional
-    public List<Doctor> getDoctorsByClinicId(Long clinicId) {
+    public List<User> getDoctorsByClinicId(Long clinicId) {
         Optional<Clinic> clinicOptional = clinicRepository.findById(clinicId);
         if (clinicOptional.isPresent()) {
             Clinic clinic = clinicOptional.get();

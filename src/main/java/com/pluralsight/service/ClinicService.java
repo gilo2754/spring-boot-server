@@ -3,7 +3,7 @@ package com.pluralsight.service;
 import java.util.List;
 
 import com.pluralsight.entity.Clinic;
-import com.pluralsight.entity.Doctor;
+import com.pluralsight.entity.User;
 import com.pluralsight.enums.Speciality;
 
 public interface ClinicService {
@@ -19,5 +19,5 @@ public interface ClinicService {
 
     List<Clinic> getClinicsBySpeciality(Speciality speciality);
 
-    List<Doctor> getDoctorsByClinicId(Long clinicId);
+    List<User> getDoctorsByClinicId(Long clinicId);
 }

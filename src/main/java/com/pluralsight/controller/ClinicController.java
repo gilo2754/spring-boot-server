@@ -1,7 +1,7 @@
 package com.pluralsight.controller;
 
 import com.pluralsight.entity.Clinic;
-import com.pluralsight.entity.Doctor;
+import com.pluralsight.entity.User;
 import com.pluralsight.enums.Speciality;
 import com.pluralsight.exception.ClinicNotFoundException;
 import com.pluralsight.service.ClinicService;
@@ -26,7 +26,7 @@ public class ClinicController {
 
 
     @GetMapping("/clinic/{clinic_id}/doctors")
-    public List<Doctor> getDoctorsByClinicId(@PathVariable Long clinic_id) {
+    public List<User> getDoctorsByClinicId(@PathVariable Long clinic_id) {
         return clinicService.getDoctorsByClinicId(clinic_id);
     }
 

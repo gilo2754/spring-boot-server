@@ -1,6 +1,8 @@
 package com.pluralsight.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pluralsight.enums.Role;
+import com.pluralsight.enums.Speciality;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,21 +10,23 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collection;
 
 @Entity
 @Table(name = "_user")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
 @AllArgsConstructor
-@DiscriminatorValue("USER")
+//@DiscriminatorValue("USER")
 //Probably this entity will be renamed by User
 public class User implements Serializable, UserDetails {
 
@@ -31,17 +35,9 @@ public class User implements Serializable, UserDetails {
     @Column(nullable = false) // name = "user_id")
     private Long user_id;
 
-  //  @Getter(AccessLevel.NONE)
-  //  @Column(name = "personType", insertable = false, updatable = false)
-    //private String personType = PersonType.DOCTOR.toString();
-
-  /*
-  @Column(name = "personType", insertable = false, updatable = false)
-  private String personType;// = PersonType.DOCTOR.toString();
-*/
-  @Enumerated(EnumType.STRING)
-  @Column(name = "role", updatable = false, insertable = false)
-  private Role role;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")//, updatable = false, insertable = false)
+    private Role role;
 
   @NotBlank
     @Column(name = "username")
@@ -62,12 +58,7 @@ public class User implements Serializable, UserDetails {
     return password;
   }
 
-    /*
-    @JsonIgnore // Exclude the password field from JSON serialization
-    public String getPassword() {
-    return password;
-    }
-*/
+
     @NotBlank
     @Column(name = "firstName")
     private String firstName;
@@ -86,6 +77,25 @@ public class User implements Serializable, UserDetails {
 
     @Column(name = "dateOfBirth")
     private LocalDate dateOfBirth;
+
+    //Attributes for Doctors
+    @NotNull
+    @Column(name = "speciality")
+    @Enumerated(EnumType.STRING)
+    private Speciality speciality;
+
+  @Column(name = "availability")
+  private LocalTime availability;
+
+  @JsonIgnore
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "clinic_id")
+  private Clinic clinic_id;
+
+  // ...for Patients
+  @NotBlank
+  @Column(name = "social_number")
+  private String social_number;
 
   @Override
   public boolean isAccountNonExpired() {
