@@ -18,11 +18,11 @@ import java.util.List;
 @AllArgsConstructor
 public class ClinicController {
     private ClinicService clinicService;
-    private static final String OBJ ="clinic";
-    private static final String ADD_PATH = "/"+ OBJ +"/add";
+    private static final String CLINIC ="clinic";
+    private static final String ADD_PATH = "/"+ CLINIC +"/add";
     //TODO use just 1 Obj by ID
-    private static final String OBJ_BY_ID_UPDATE_PATH = "/"+ OBJ +"/{clinicId}";
-    private static final String OBJ_BY_ID_PATH = "/"+ OBJ +"/{id}";
+    private static final String BY_ID_UPDATE_PATH = "/"+ CLINIC +"/{clinicId}";
+    private static final String BY_ID_PATH = "/"+ CLINIC +"/{id}";
 
 
     @GetMapping("/clinic/{clinic_id}/doctors")
@@ -30,7 +30,7 @@ public class ClinicController {
         return clinicService.getDoctorsByClinicId(clinic_id);
     }
 
-    @GetMapping(OBJ)
+    @GetMapping(CLINIC)
     public ResponseEntity<List<Clinic>> getClinicsBySpecialty(@RequestParam(name= "Speciality", required = false) Speciality speciality) {
 //        public ResponseEntity<List<Clinic>> getClinicsBySpecialty(@RequestParam(value= "speciality", required = false) String speciality) {
 
@@ -50,7 +50,7 @@ public class ClinicController {
 
     }
 
-    @GetMapping(OBJ_BY_ID_PATH)
+    @GetMapping(BY_ID_PATH)
     public ResponseEntity<Clinic> getClinic(@PathVariable("id") long id) {
         try {
             return new ResponseEntity<Clinic>(this.clinicService.getClinicById(id),
@@ -66,7 +66,7 @@ public class ClinicController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping(OBJ_BY_ID_PATH)
+    @DeleteMapping(BY_ID_PATH)
     public ResponseEntity<String> deteleClinic(@PathVariable("id") long id) {
         try {
             this.clinicService.deleteClinic(id);
@@ -76,7 +76,7 @@ public class ClinicController {
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
     }
-    @PutMapping(OBJ_BY_ID_UPDATE_PATH)
+    @PutMapping(BY_ID_UPDATE_PATH)
     public ResponseEntity<Clinic> updateClinic(@PathVariable Long clinicId, @RequestBody Clinic clinic) {
         Clinic updatedClinic = clinicService.updateClinic(clinicId, clinic);
         return ResponseEntity.ok(updatedClinic);

@@ -39,24 +39,28 @@ public class User implements Serializable, UserDetails {
     @Column(name = "role")//, updatable = false, insertable = false)
     private Role role;
 
-  @NotBlank
+    @NotBlank
     @Column(name = "username")
     private String username;
 
-    //@NotBlank
+    @NotBlank
     //@Size(max = 50)
     @Column(name = "password")
     private String password;
 
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return role.getAuthorities();
-  }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
 
-  @Override
-  public String getPassword() {
-    return password;
-  }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return role.getAuthorities();
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
 
     @NotBlank
@@ -84,47 +88,38 @@ public class User implements Serializable, UserDetails {
     @Enumerated(EnumType.STRING)
     private Speciality speciality;
 
-  @Column(name = "availability")
-  private LocalTime availability;
+    @Column(name = "availability")
+    private LocalTime availability;
 
-  @JsonIgnore
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "clinic_id")
-  private Clinic clinic_id;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "clinic_id")
+    private Clinic clinic_id;
 
-  // ...for Patients
-  @NotBlank
-  @Column(name = "social_number")
-  private String social_number;
+    @Column(name = "dui")
+    private String dui;
+    // ...for Patients
+    @Column(name = "social_number")
+    private String social_number;
 
-  @Override
-  public boolean isAccountNonExpired() {
-    return true;
-  }
-
-  @Override
-  public boolean isAccountNonLocked() {
-    return true;
-  }
-
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return true;
-  }
-
-  @Override
-  public boolean isEnabled() {
-    return true;
-  }
-
-    /*
-    public Person(Long person_id, String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth) {
-        this.person_id = person_id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.dateOfBirth = dateOfBirth;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
-    */
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 }
