@@ -1,5 +1,6 @@
 package com.pluralsight.controller;
 
+import com.pluralsight.entity.Address;
 import com.pluralsight.entity.User;
 import com.pluralsight.enums.Role;
 import com.pluralsight.repository.UserRepository;
@@ -32,38 +33,6 @@ public class PersonController {
     private final PasswordEncoder passwordEncoder;
     private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
 
-   /* @GetMapping("/info")
-    public ResponseEntity<?> getUserInfo(Authentication authentication) {
-        if (authentication != null && authentication.isAuthenticated()) {
-            // Verificar los roles y permisos del usuario autenticado
-            if (authentication.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_DOCTOR"))) {
-                // El usuario tiene el rol de doctor, permite el acceso a la información
-                // ...
-            } else {
-                // El usuario no tiene el permiso necesario, devuelve un 403
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permiso para acceder a esta información. 403");
-            }
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Debes iniciar sesión para acceder a esta información. 401");
-        }
-        return null;
-    }
-*/
-
-      /*
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        String username = authentication.getName();
-        Optional user = userService.getUserByUsername(username);
-
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-       // user.setPassword("");
-
-        return ResponseEntity.ok(user);*/
-    //@PreAuthorize("hasRole('DOCTOR')")
-    //@PreAuthorize("hasAuthority('doctor:read')")
       @GetMapping("/user-info")
       public ResponseEntity<Optional<User>> getUserInfo(@RequestHeader(name = "Authorization") String jwtToken) {
           String token = jwtToken.substring(7); // Elimina el prefijo "Bearer "
@@ -99,7 +68,6 @@ public class PersonController {
         }
     }
 
-
     @PostMapping("/person/add")
     public ResponseEntity<?> createPerson(@RequestBody User person) {
         try {
@@ -127,13 +95,13 @@ public class PersonController {
             if (person.getDateOfBirth() == null) {
                 missingFields.add("dateOfBirth");
             }
-           /* if (person.getSocial_number() == null) {
+            if (person.getSocial_number() == null) {
                 missingFields.add("social_number");
-            }*/
-           /* if (person.getRole() == null) {
+            }
+            if (person.getRole() == null) {
                 missingFields.add("role");
             }
-*/
+
             if (!missingFields.isEmpty()) {
                 // Construir un mensaje de error que enumere los campos faltantes
                 String errorMessage = "Faltan campos obligatorios. Asegúrese de proporcionar los siguientes campos: "
@@ -146,6 +114,39 @@ public class PersonController {
             String encryptedPassword = passwordEncoder.encode(plainPassword);
             person.setPassword(encryptedPassword);
 
+            // Create an Address object if address data is provided
+            if (person.getAddress() != null) {
+                // Validar que se proporcionen todos los campos requeridos para la dirección
+                Address address = person.getAddress();
+                List<String> missingAddressFields = new ArrayList<>();
+
+
+                if (address.getStreet() == null) {
+                    missingAddressFields.add("street");
+                }
+                if (address.getNeighborhood() == null) {
+                    missingAddressFields.add("neighborhood");
+                }
+                if (address.getCity() == null) {
+                    missingAddressFields.add("city");
+                }
+                if (address.getDepartment() == null) {
+                    missingAddressFields.add("department");
+                }
+                if (address.getPostalCode() == null) {
+                    missingAddressFields.add("postalCode");
+                }
+                if (address.getAdditionalInfo() == null) {
+                    missingAddressFields.add("additionalInfo");
+                }
+
+                if (!missingAddressFields.isEmpty()) {
+                    // Construir un mensaje de error que enumere los campos faltantes para la dirección
+                    String errorMessage = "Faltan campos obligatorios para la dirección. Asegúrese de proporcionar los siguientes campos: "
+                            + String.join(", ", missingAddressFields);
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+                }
+            }
             // Save the person
             User createdPerson = userService.createPerson(person);
 
