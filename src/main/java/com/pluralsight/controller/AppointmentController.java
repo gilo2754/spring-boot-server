@@ -9,16 +9,19 @@ import com.pluralsight.exception.ClinicNotFoundException;
 import com.pluralsight.exception.UserNotFoundException;
 import com.pluralsight.service.AppointmentService;
 import com.pluralsight.service.ClinicService;
-import com.pluralsight.service.EmailService;
 import com.pluralsight.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +32,8 @@ public class AppointmentController {
     private AppointmentService appointmentService;
     private UserService userService;
     private ClinicService clinicService;
-    private EmailService emailService;
+    private JavaMailSender javaMailSender;
+
 
     //TODO: show just the appointments from the actual user
     @GetMapping
@@ -111,8 +115,10 @@ public class AppointmentController {
         }
     }
 
+
     @PostMapping("/create")
     public ResponseEntity<String> createAppointment(@RequestBody Appointment appointment) {
+
         try {
             appointmentService.createAppointment(appointment);
             Clinic clinicDetails =
@@ -125,23 +131,38 @@ public class AppointmentController {
             String destinatario = "gilo2754@gmail.com";
             String asunto = "Nueva cita médica creada para";
             String doctorFirstName = doctorDetails.get().getFirstName();
-            String patientirstName = patientDetails.get().getFirstName();
+            String patientFirstName = patientDetails.get().getFirstName();
             String clinicName = clinicDetails.getClinic_name();
 
-            String mensaje = "Se ha creado una nueva cita médica para^"+ patientirstName + ". Detalles:\n\n" +
-                    "Fecha y hora: " + appointment.getStartTime() + "\n" +
-                    "Médico: " + doctorFirstName + "\n" +
-                    "Clinica: " + clinicName + "\n" +
-                    "Paciente: " + patientirstName;
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setTo(destinatario);
+            helper.setSubject(asunto);
+
+            String mensaje = "<html><body>" +
+                    "<p>Se ha creado una nueva cita médica para " + patientFirstName + ". Detalles:</p>" +
+                    "<ul>" +
+                    "<li>Fecha y hora: " + appointment.getStartTime() + "</li>" +
+                    "<li>Médico: " + doctorFirstName + "</li>" +
+                    "<li>Clínica: " + clinicName + "</li>" +
+                    "<li>Paciente: " + patientFirstName + "</li>" +
+                    "</ul>" +
+                    // Agregar un botón con un enlace
+                    "<a href='http://tu-sitio-web.com/confirmar-cita'>Confirmar Cita</a>" +
+                    "</body></html>";
             // TODO completar con detalles reales de la cita
             // TODO: mover la la creacion del E-Mail a otra clase?
-            emailService.enviarCorreo(destinatario, asunto, mensaje);
+            helper.setText(mensaje, true); // Establece el contenido como HTML
+            javaMailSender.send(message);
+            //emailService.enviarCorreo(destinatario, asunto, mensaje);
 
-            return ResponseEntity.ok("Cita médica creada exitosamente para "+ patientirstName);
+            return ResponseEntity.ok("Cita médica creada exitosamente para "+ patientFirstName);
         } catch (UserNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (ClinicNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
         }
     }
 
