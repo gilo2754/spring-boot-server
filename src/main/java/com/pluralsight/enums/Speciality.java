@@ -1,6 +1,7 @@
 package com.pluralsight.enums;
 
 public enum Speciality {
+    GENERAL("General"),
     CARDIOLOGIA("Cardiología"),
     DERMATOLOGIA("Dermatología"),
     GASTROENTEROLOGIA("Gastroenterología"),
