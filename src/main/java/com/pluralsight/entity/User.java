@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "_user")
@@ -91,10 +92,22 @@ public class User implements Serializable, UserDetails {
     @Column(name = "availability")
     private LocalTime availability;
 
+    /*
+    OLD
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clinic_id")
-    private Clinic clinic_id;
+    private Clinic clinic_id;*/
+
+    //NEW
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "clinic_doctor",
+            joinColumns = @JoinColumn(name = "doctor_id"),
+            inverseJoinColumns = @JoinColumn(name = "clinic_id")
+    )
+    private List<Clinic> clinics;
 
     @Column(name = "dui")
     private String dui;

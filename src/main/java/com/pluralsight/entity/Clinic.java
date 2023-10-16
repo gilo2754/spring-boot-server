@@ -70,11 +70,15 @@ public class Clinic implements Serializable {
     private LocalTime closingTime;
 
     // Avoiding circular reference
+    /*
+    OLD 16.10 18:48
     @JsonIgnore
+
     @OneToMany(mappedBy = "clinic_id")
+    private List<User> doctors;*/
+    //@JsonIgnore
+    @ManyToMany(mappedBy = "clinics")
     private List<User> doctors;
-
-
 
     //FIXME: Contructor really needed?
    /* public Clinic(String s, String s1, Speciality pediatria) {
