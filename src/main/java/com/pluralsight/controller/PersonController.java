@@ -164,5 +164,17 @@ public class PersonController {
         }
     }
 
+    @PutMapping("/person/update")
+    public ResponseEntity<User> updateUser(@RequestBody User updatedUser) {
+        User user = userService.updateUser( updatedUser);
+
+        if (user == null) {
+            // Si no se encuentra el usuario con el userId especificado, puedes devolver una respuesta apropiada, por ejemplo, un 404 Not Found.
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(user);
+    }
+
 
 }

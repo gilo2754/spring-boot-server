@@ -11,7 +11,10 @@ public enum Speciality {
     PEDIATRIA("Pediatría"),
     PSIQUIATRIA("Psiquiatría"),
     TRAUMATOLOGIA("Traumatología"),
+    ODONTOLODIA("Odontología"),
     UROLOGIA("Urología");
+
+
 
     private final String value;
 

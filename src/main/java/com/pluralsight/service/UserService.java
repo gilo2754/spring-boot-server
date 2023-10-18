@@ -14,4 +14,6 @@ public interface UserService<P extends User> {
     P createPerson(P person);
 
     Optional<User> getUserByUsername(String username);
+
+    User updateUser(User updatedUser);
 }

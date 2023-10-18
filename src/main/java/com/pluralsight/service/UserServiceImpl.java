@@ -74,6 +74,38 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username);
     }
 
+    @Override
+    public User updateUser(User updatedUser) {
+        // Primero, verifica si el usuario con el ID especificado existe en tu sistema.
+        User existingUser = userRepository.findById(updatedUser.getUser_id()).orElse(null);
+
+        if (existingUser == null) {
+            // El usuario no existe, puedes manejar este caso de alguna manera, por ejemplo, lanzar una excepción.
+            throw new UserNotFoundException("El usuario no se encontró con el ID especificado");
+        }
+
+        // Realiza las actualizaciones de los campos que desees permitir modificar
+        if (updatedUser.getUsername() != null) {
+            existingUser.setUsername(updatedUser.getUsername());
+        }
+        if (updatedUser.getEmail() != null) {
+            existingUser.setEmail(updatedUser.getEmail());
+        }
+        if (updatedUser.getFirstName() != null) {
+            existingUser.setFirstName(updatedUser.getFirstName());
+        }
+        if (updatedUser.getLastName() != null) {
+            existingUser.setLastName(updatedUser.getLastName());
+        }
+        // Continúa actualizando otros campos según sea necesario
+
+        // Luego, guarda el usuario actualizado en tu base de datos
+         updatedUser = userRepository.save(existingUser);
+
+        return updatedUser;
+    }
+
+
     /*
     @Transactional
     public Doctor createDoctor(Doctor doctor) {

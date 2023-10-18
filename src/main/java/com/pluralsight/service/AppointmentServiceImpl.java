@@ -46,11 +46,13 @@ public class AppointmentServiceImpl implements AppointmentService {
             throw new UserNotFoundException("El paciente con siguiente ID no encontrado: " + appointment.getPatient().getUser_id());
         }
 
+        /*
+        // Not required, because doctor will be assigned, by appointment confirmation
         Optional<User> doctorOptional = userRepository.findById(appointment.getDoctor().getUser_id());
         if (doctorOptional.isEmpty()) {
          throw new UserNotFoundException("El doctor con siguiente ID no encontrado: " + appointment.getDoctor().getUser_id());
      }
-
+*/
      Optional<Clinic> clinicOptional = clinicRepository.findById(appointment.getClinic().getClinic_id());
      if (clinicOptional.isEmpty()) {
          throw new ClinicNotFoundException("La clínica seleccionada no existe.");
