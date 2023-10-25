@@ -1,22 +1,17 @@
 package com.pluralsight.entity;
 
-import java.io.Serializable;
-import java.time.LocalTime;
-import java.util.List;
+import com.pluralsight.enums.ClinicState;
+import com.pluralsight.enums.Speciality;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.pluralsight.enums.ClinicState;
-import com.pluralsight.enums.Speciality;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.io.Serializable;
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -32,8 +27,6 @@ public class Clinic implements Serializable {
     @Column(name = "clinic_id")
     private Long clinic_id;
 
-
-//    @NotNull
     @Column(name = "clinic_name")
     private String clinic_name;
 
@@ -42,7 +35,6 @@ public class Clinic implements Serializable {
     private String clinic_description;
 
     @Column(name="clinic_address")
-   //@NotBlank
     @Size(max = 200)
     private String clinic_address;
 
@@ -56,46 +48,49 @@ public class Clinic implements Serializable {
     @Enumerated(EnumType.STRING)
     private ClinicState clinic_state = ClinicState.IN_REVIEW;
 
-  //  @NotNull
     @Column(name = "speciality")
     @Enumerated(EnumType.STRING)
     private Speciality speciality;
 
-//    @NotNull
     @Column(name = "opening_time")
     private LocalTime openingTime;
 
-    //@NotNull
     @Column(name = "closing_time")
     private LocalTime closingTime;
 
-    // Avoiding circular reference
-    /*
-    OLD 16.10 18:48
-    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                  //  CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "clinic_doctors",
+            joinColumns = { @JoinColumn(name = "clinic_id") },
+            inverseJoinColumns = { @JoinColumn(name = "doctor_id") })
+    private Set<User> doctors = new HashSet<>();
 
-    @OneToMany(mappedBy = "clinic_id")
-    private List<User> doctors;*/
-    //@JsonIgnore
-    @ManyToMany(mappedBy = "clinics")
-    private List<User> doctors;
+    public void addDoctor(User doctor) {
+        this.doctors.add(doctor);
+        doctor.getClinics().add(this);
+    }
 
     //FIXME: Contructor really needed?
-   /* public Clinic(String s, String s1, Speciality pediatria) {
-    }
-    */
 
     public Clinic(String clinic_name, String clinic_address, Speciality speciality) {
         this.clinic_name = clinic_name;
         this.clinic_address = clinic_address;
         this.speciality = speciality;
-
     }
-
-
 
     public boolean isOpen(LocalTime time) {
         return !time.isBefore(openingTime) && time.isBefore(closingTime);
+    }
+
+     public Set<User> getDoctors() {
+        return this.doctors();
+    }
+
+    private Set<User> doctors() {
+        return doctors;
     }
 
 }

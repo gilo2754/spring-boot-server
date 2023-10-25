@@ -4,6 +4,7 @@ import com.pluralsight.entity.Address;
 import com.pluralsight.entity.User;
 import com.pluralsight.enums.Role;
 import com.pluralsight.repository.UserRepository;
+import com.pluralsight.service.ClinicService;
 import com.pluralsight.service.UserService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -19,6 +20,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 @RestController
 @RequestMapping("/api/v1")
 @AllArgsConstructor
@@ -28,7 +31,8 @@ public class PersonController {
 
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private ClinicService clinicService;
     @Autowired
     private final PasswordEncoder passwordEncoder;
     private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
@@ -174,6 +178,12 @@ public class PersonController {
         }
 
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/clinic/{clinic_id}/doctors")
+    public Set<User>
+    getDoctorsByClinicId(@PathVariable Long clinic_id) {
+        return userService.getDoctorsByClinicId(clinic_id);
     }
 
 

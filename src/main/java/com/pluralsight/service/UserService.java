@@ -5,6 +5,7 @@ import com.pluralsight.enums.Role;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface UserService<P extends User> {
     List<User> listPerson();
@@ -16,4 +17,7 @@ public interface UserService<P extends User> {
     Optional<User> getUserByUsername(String username);
 
     User updateUser(User updatedUser);
+
+    Set<User> getDoctorsByClinicId(Long clinicId);
+
 }

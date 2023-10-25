@@ -3,7 +3,8 @@ package com.pluralsight.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pluralsight.enums.Role;
 import com.pluralsight.enums.Speciality;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,21 +17,14 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "_user")
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-//@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 @Getter
 @Setter
-@NoArgsConstructor
-@ToString
-@AllArgsConstructor
-//@DiscriminatorValue("USER")
-//Probably this entity will be renamed by User
 public class User implements Serializable, UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false) // name = "user_id")
@@ -52,17 +46,6 @@ public class User implements Serializable, UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role.getAuthorities();
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
 
     @NotBlank
     @Column(name = "firstName")
@@ -91,23 +74,14 @@ public class User implements Serializable, UserDetails {
 
     @Column(name = "availability")
     private LocalTime availability;
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+              //      CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
 
-    /*
-    OLD
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "clinic_id")
-    private Clinic clinic_id;*/
-
-    //NEW
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "clinic_doctor",
-            joinColumns = @JoinColumn(name = "doctor_id"),
-            inverseJoinColumns = @JoinColumn(name = "clinic_id")
-    )
-    private List<Clinic> clinics;
+    private Set<Clinic> clinics = new HashSet<>();
 
     @Column(name = "dui")
     private String dui;
@@ -116,6 +90,21 @@ public class User implements Serializable, UserDetails {
     private String social_number;
 
     @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return role.getAuthorities();
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+   @Override
     public boolean isAccountNonExpired() {
         return true;
     }
@@ -134,5 +123,6 @@ public class User implements Serializable, UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 
 }

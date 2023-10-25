@@ -27,18 +27,17 @@ public class Appointment implements Serializable {
     @Column(name = "appointment_id")
     private Long appointment_id;
 
-   // @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "clinic_id")
     private Clinic clinic;
 
-    //@JsonIgnore
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private User patient;
 
     //@JsonIgnore
+    // TODO maybe this is not needed, because you can go from clinic to doctor
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     private User doctor;

@@ -38,9 +38,7 @@ public class AppointmentController {
     //TODO: show just the appointments from the actual user
     @GetMapping
     public ResponseEntity<List<Appointment>> getMyAppointments(){//Authentication authentication) {
-        //Long personId = extractPersonIdFromAuthentication(authentication);
-        //List<Appointment> userAppointments = appointmentService.listAppointmentsByPersonId(personId);
-        List<Appointment> userAppointments =  this.appointmentService.listAppointments();
+          List<Appointment> userAppointments =  this.appointmentService.listAppointments();
         return ResponseEntity.ok(userAppointments);
     }
 
@@ -176,15 +174,7 @@ public class AppointmentController {
 //    @PreAuthorize("hasRole('ROLE_DOCTOR')")
     public ResponseEntity<?> getAppointmentsByClinic(@PathVariable Long clinicId) {
         // TODO Verificar si el usuario tiene el rol "DOCTOR"
-      /*  Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean hasDoctorRole = authentication.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_DOCTOR"));
 
-        if (!hasDoctorRole) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body("No tienes permisos para acceder a este recurso.");
-        }
-*/
         List<Appointment> appointments = appointmentService.findByClinic(clinicId);
 
         if (appointments.isEmpty()) {
@@ -193,6 +183,13 @@ public class AppointmentController {
         } else {
             return ResponseEntity.ok(appointments);
         }
+    }
+
+    @GetMapping("/doctor/{doctorId}")
+    public ResponseEntity<?> getAppointmentsByDoctorId(@PathVariable Long doctorId) {
+        // Aquí llama a tu servicio para recuperar las citas por el ID del médico
+        List<Appointment> appointments = appointmentService.getAppointmentsByDoctorId(doctorId);
+        return ResponseEntity.ok(appointments);
     }
 
     /**

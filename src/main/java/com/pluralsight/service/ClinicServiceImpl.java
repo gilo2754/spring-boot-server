@@ -1,23 +1,27 @@
 package com.pluralsight.service;
 
+import com.pluralsight.entity.Clinic;
+import com.pluralsight.entity.User;
+import com.pluralsight.enums.Role;
+import com.pluralsight.enums.Speciality;
+import com.pluralsight.exception.ClinicNotFoundException;
+import com.pluralsight.repository.ClinicRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import com.pluralsight.entity.User;
-import com.pluralsight.enums.Speciality;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.pluralsight.entity.Clinic;
-import com.pluralsight.exception.ClinicNotFoundException;
-import com.pluralsight.repository.ClinicRepository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ClinicServiceImpl implements ClinicService {
     @Autowired
     private ClinicRepository clinicRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Transactional(readOnly = true)
     public List<Clinic> listClinics() {
@@ -46,17 +50,32 @@ public class ClinicServiceImpl implements ClinicService {
 
     @Transactional
     public Clinic createClinic(Clinic clinic) {
-        System.out.println(clinic);
-        // Optional<Application> optionalApplication = this.applicationRepository.findById(application.));
-        // Optional<Application> optionalApplication = this.applicationRepository.findById(id);
-        //
-        // } else
-        // throw new ApplicationNotFoundException("Application with id " + id + "already exist");
-        // }
-        // TODO add some rule to avoid duplication
-        this.clinicRepository.save(clinic);
-        return clinic;
+        List<User> doctorsToAdd = new ArrayList<>();
 
+        for (User doctor : clinic.getDoctors()) {
+            Long doctorId = doctor.getUser_id();
+
+            if (userService.getPersonById(doctorId) == null) {
+                // El médico no existe
+                throw new IllegalArgumentException("El médico con user_id " + doctorId + " no existe.");
+            }
+
+            if (!doctor.getRole().equals(Role.DOCTOR)) {
+                // El usuario no es un médico válido
+                throw new IllegalArgumentException("El usuario con user_id " + doctorId + " no es un médico válido.");
+            }
+
+            doctorsToAdd.add(doctor);
+        }
+
+        // Verificamos si la lista de médicos está vacía o no
+        if (!doctorsToAdd.isEmpty()) {
+          //  clinic.getDoctors().clear();
+            clinic.getDoctors().addAll(doctorsToAdd);
+        }
+
+
+        return this.clinicRepository.save(clinic);
     }
 
     @Transactional
@@ -72,6 +91,7 @@ public class ClinicServiceImpl implements ClinicService {
         clinic.setSpeciality(updatedClinic.getSpeciality());
         clinic.setOpeningTime(updatedClinic.getOpeningTime());
         clinic.setClosingTime(updatedClinic.getClosingTime());
+        clinic.setDoctors(updatedClinic.getDoctors());
         return clinicRepository.save(clinic);
     }
 
@@ -83,17 +103,6 @@ public class ClinicServiceImpl implements ClinicService {
                 //avoid NPEs
                 .filter(clinic -> clinic != null && clinic.getSpeciality() != null && clinic.getSpeciality().equals(speciality))
                 .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public List<User> getDoctorsByClinicId(Long clinicId) {
-        Optional<Clinic> clinicOptional = clinicRepository.findById(clinicId);
-        if (clinicOptional.isPresent()) {
-            Clinic clinic = clinicOptional.get();
-            return clinic.getDoctors();
-        } else {
-            throw new ClinicNotFoundException("Clinic with id " + clinicId + " not found");
-        }
     }
 
 }

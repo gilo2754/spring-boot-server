@@ -9,13 +9,7 @@ public interface AppointmentService {
 
     Appointment createAppointment(Appointment appointment);
 
-    /*
- public Appointment createAppointment(Appointment appointment) {
-
-     return appointmentRepository.save(appointment);
- }
- */
-    Appointment getAppointmentById(Long id);
+   Appointment getAppointmentById(Long id);
 
     Appointment updateAppointment(Appointment appointment);
 
@@ -26,6 +20,8 @@ public interface AppointmentService {
     List<Appointment> findByClinic(Long clinicId);
 
     Appointment reserveAppointment(Long appointmentId, Long patientId) throws Exception;
+
+    List<Appointment> getAppointmentsByDoctorId(Long doctorId);
 }
 
 

@@ -124,7 +124,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         User user = personOptional.get();
         if (Role.DOCTOR.equals(user.getRole())) {
-            return appointmentRepository.findByDoctor(user);
+            return appointmentRepository.findByDoctor(user.getUser_id());
         } else if (Role.PATIENT.equals(user.getRole())) {
             return appointmentRepository.findByPatient(user);
         } else {
@@ -168,6 +168,11 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.save(appointment);
 
         return appointment;
+    }
+
+    public List<Appointment> getAppointmentsByDoctorId(Long doctor) {
+        // Delega la consulta al repositorio (AppointmentRepository)
+        return appointmentRepository.findByDoctor(doctor);
     }
 
 
