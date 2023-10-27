@@ -15,13 +15,16 @@ public interface AppointmentService {
 
     void deleteAppointment(long id);
 
-    List<Appointment> listAppointmentsByPersonId(Long personId);
+    List<Appointment> getAppointmentsByPersonId(Long personId);
+
 
     List<Appointment> findByClinic(Long clinicId);
 
     Appointment reserveAppointment(Long appointmentId, Long patientId) throws Exception;
 
-    List<Appointment> getAppointmentsByDoctorId(Long doctorId);
+    List<Appointment> getAppointmentsByDoctorUsername(String doctorUsername);
+
+    List<Appointment> findByPersonId(Long personId);
 }
 
 

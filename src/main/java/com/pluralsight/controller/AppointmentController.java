@@ -22,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -185,12 +186,35 @@ public class AppointmentController {
         }
     }
 
-    @GetMapping("/doctor/{doctorId}")
-    public ResponseEntity<?> getAppointmentsByDoctorId(@PathVariable Long doctorId) {
-        // Aquí llama a tu servicio para recuperar las citas por el ID del médico
-        List<Appointment> appointments = appointmentService.getAppointmentsByDoctorId(doctorId);
-        return ResponseEntity.ok(appointments);
+    @GetMapping("/person/{personId}")
+    public ResponseEntity<?> getAppointmentsByPerson(@PathVariable Long personId) {
+        // TODO Verificar si el usuario tiene el rol "DOCTOR"
+
+        List<Appointment> appointments = appointmentService.findByPersonId(personId);
+
+        if (appointments.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron citas para la Personas con ID: " + personId);
+        } else {
+            return ResponseEntity.ok(appointments);
+        }
     }
+
+    @GetMapping("/person")
+    public ResponseEntity<?> getPersonAppointments(Authentication authentication) {
+        Long personId = extractPersonIdFromAuthentication(authentication);
+
+        if (personId != null) {
+            // El usuario está autenticado, puedes acceder al ID de la persona
+            List<Appointment> personAppointments = appointmentService.getAppointmentsByPersonId(personId);
+            return ResponseEntity.ok(personAppointments);
+        } else {
+            // El usuario no está autenticado, devuelve un mensaje de error o realiza una acción adecuada
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Acceso no autorizado. Inicia sesión.");
+        }
+    }
+
+
 
     /**
      * Extracts the personId from the authentication.

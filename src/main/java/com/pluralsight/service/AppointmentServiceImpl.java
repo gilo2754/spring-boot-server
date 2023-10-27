@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -116,7 +117,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.deleteById(id);
     }
 
-    @Override public List<Appointment> listAppointmentsByPersonId(Long personId) {
+    @Override public List<Appointment> getAppointmentsByPersonId(Long personId) {
         Optional<User> personOptional = userRepository.findById(personId);
         if (personOptional.isEmpty()) {
             return Collections.emptyList();
@@ -124,7 +125,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         User user = personOptional.get();
         if (Role.DOCTOR.equals(user.getRole())) {
-            return appointmentRepository.findByDoctor(user.getUser_id());
+            return appointmentRepository.findByDoctor(Optional.of(user));
         } else if (Role.PATIENT.equals(user.getRole())) {
             return appointmentRepository.findByPatient(user);
         } else {
@@ -170,10 +171,41 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointment;
     }
 
-    public List<Appointment> getAppointmentsByDoctorId(Long doctor) {
+    /*public List<Appointment> getAppointmentsByDoctorId(Long doctor) {
         // Delega la consulta al repositorio (AppointmentRepository)
         return appointmentRepository.findByDoctor(doctor);
+    }*/
+
+    @Override
+    public List<Appointment> getAppointmentsByDoctorUsername(String doctorUsername) {
+        // Primero, busca al doctor por su nombre de usuario
+        Optional<User> doctor = userRepository.findByUsername(doctorUsername);
+
+        if (doctor != null) {
+            // Luego, obtén las citas médicas asociadas a ese doctor
+            List<Appointment> doctorAppointments = appointmentRepository.findByDoctor(doctor);
+            return doctorAppointments;
+        }
+
+        // Si el doctor no se encuentra, puedes devolver una lista vacía o lanzar una excepción, según tus necesidades.
+        return new ArrayList<>();
     }
 
+    @Override
+    public List<Appointment> findByPersonId(Long personId) {
+        Optional<User> person = userRepository.findById(personId);
+        if (person.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        User user = person.get();
+        if (Role.DOCTOR.equals(user.getRole())) {
+            return appointmentRepository.findByDoctor(Optional.of(user));
+        } else if (Role.PATIENT.equals(user.getRole())) {
+            return appointmentRepository.findByPatient(user);
+        } else {
+            return Collections.emptyList();
+        }
+    }
 
 }
