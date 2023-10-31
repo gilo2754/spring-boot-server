@@ -3,7 +3,7 @@ package com.pluralsight.controller;
 import com.pluralsight.entity.Clinic;
 import com.pluralsight.enums.Speciality;
 import com.pluralsight.exception.ClinicNotFoundException;
-import com.pluralsight.projection.DoctorProjection;
+//import com.pluralsight.projection.DoctorProjection;
 import com.pluralsight.repository.ClinicRepository;
 import com.pluralsight.service.ClinicService;
 import com.pluralsight.service.UserService;
@@ -30,14 +30,14 @@ public class ClinicController {
     private static final String BY_ID_UPDATE_PATH = "/"+ CLINIC +"/{clinicId}";
     private static final String BY_ID_PATH = "/"+ CLINIC +"/{id}";
 
-    @GetMapping("/clinicProjection")
+   /* @GetMapping("/clinicProjection")
     public List<DoctorProjection> getAllClinics() {
         List<DoctorProjection> clinicsWithLimitedDoctors = clinicRepository.findAllDoctors();
 
         // Procesa la lista de clínicas y médicos según sea necesario.
 
         return clinicsWithLimitedDoctors;
-    }
+    }*/
     @GetMapping(CLINIC)
     public ResponseEntity<List<Clinic>> getClinicsBySpecialty(@RequestParam(name= "Speciality", required = false) Speciality speciality) {
 //        public ResponseEntity<List<Clinic>> getClinicsBySpecialty(@RequestParam(value= "speciality", required = false) String speciality) {
