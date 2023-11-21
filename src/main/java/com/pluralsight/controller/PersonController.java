@@ -1,5 +1,6 @@
 package com.pluralsight.controller;
 
+import com.pluralsight.DTO.UserDTO;
 import com.pluralsight.entity.Address;
 import com.pluralsight.entity.User;
 import com.pluralsight.enums.Role;
@@ -68,6 +69,28 @@ public class PersonController {
         } else {
             // Return list of all users
             List<User> allPeople = this.userService.listPerson();
+            return allPeople;
+        }
+    }
+
+    @GetMapping("/peopleDTO")
+    public List<UserDTO> getPeopleDTO(@RequestParam(name= "role", required = false) String role) {
+
+        if (role !=  null)  {
+            try {
+                Role enumRole = Role.valueOf(role.toUpperCase()); // Convierte el nombre en un valor de enumerado
+                // Continúa con el procesamiento usando enumRole
+                List<UserDTO> peopleByRole = userService.listPersonByRole(enumRole);
+                if (peopleByRole.isEmpty()) {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No people found by this role: " + role);
+                }
+                return peopleByRole;
+            } catch (IllegalArgumentException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid role: " + role);
+            }
+        } else {
+            // Return list of all users
+            List<UserDTO> allPeople = this.userService.listPersonDTO();
             return allPeople;
         }
     }

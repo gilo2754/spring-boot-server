@@ -1,5 +1,6 @@
 package com.pluralsight.service;
 
+import com.pluralsight.DTO.UserDTO;
 import com.pluralsight.entity.Clinic;
 import com.pluralsight.entity.User;
 import com.pluralsight.enums.Role;
@@ -7,6 +8,7 @@ import com.pluralsight.exception.ClinicNotFoundException;
 import com.pluralsight.exception.UserNotFoundException;
 import com.pluralsight.repository.ClinicRepository;
 import com.pluralsight.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     private ClinicRepository clinicRepository;
@@ -51,6 +56,15 @@ public class UserServiceImpl implements UserService {
     public List<User> listPerson() {
         return (List<User>) this.userRepository.findAll();
     }
+
+    @Override
+    public List<UserDTO> listPersonDTO() {
+        List<User> userList = (List<User>) userRepository.findAll();
+
+        // Utilizar stream y map para convertir la lista de User a UserDTO
+        return userList.stream()
+                .map(user -> modelMapper.map(user, UserDTO.class))
+                .collect(Collectors.toList());    }
 
     @Transactional
     public List<User> listPersonByRole(Role role) {

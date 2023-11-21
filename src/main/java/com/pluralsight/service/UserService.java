@@ -1,5 +1,6 @@
 package com.pluralsight.service;
 
+import com.pluralsight.DTO.UserDTO;
 import com.pluralsight.entity.User;
 import com.pluralsight.enums.Role;
 
@@ -9,6 +10,9 @@ import java.util.Set;
 
 public interface UserService<P extends User> {
     List<User> listPerson();
+
+    List<UserDTO> listPersonDTO();
+
     List<User> listPersonByRole(Role person_type);
     Optional<User> getPersonById(Long personId);
 
