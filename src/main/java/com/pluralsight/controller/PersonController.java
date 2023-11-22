@@ -31,9 +31,8 @@ public class PersonController {
     private UserService userService;
 
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
     private ClinicService clinicService;
+
     @Autowired
     private final PasswordEncoder passwordEncoder;
     private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
@@ -42,7 +41,7 @@ public class PersonController {
       public ResponseEntity<Optional<User>> getUserInfo(@RequestHeader(name = "Authorization") String jwtToken) {
           String token = jwtToken.substring(7); // Elimina el prefijo "Bearer "
           String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-          Optional<User> user = userRepository.findByUsername(username);
+          Optional<User> user = userService.getUserByUsername(username);
 
           if (user != null) {
               return ResponseEntity.ok(user); // Devuelve la información del usuario como JSON
