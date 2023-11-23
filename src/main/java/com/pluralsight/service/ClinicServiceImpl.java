@@ -105,4 +105,9 @@ public class ClinicServiceImpl implements ClinicService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public List<Clinic> getClinicsForCurrentUser(Long userId) {
+        return clinicRepository.findClinicsByUserId(userId);
+    }
+
 }

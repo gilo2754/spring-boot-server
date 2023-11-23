@@ -12,7 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class UserDTO {
-    private Long userId;
+    private Long user_id;
     private Role role;
     private String username;
     private String firstName;
@@ -36,10 +36,10 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(Long userId, Role role, String username, String firstName, String lastName, String email,
+    public UserDTO(Long user_id, Role role, String username, String firstName, String lastName, String email,
                    String phoneNumber, LocalDate dateOfBirth, Speciality speciality, LocalTime availability,
                    Set<String> clinicNames, String socialNumber, String dui) {
-        this.userId = userId;
+        this.user_id = user_id;
         this.role = role;
         this.username = username;
         this.firstName = firstName;

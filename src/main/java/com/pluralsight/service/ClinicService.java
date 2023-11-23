@@ -18,4 +18,5 @@ public interface ClinicService {
 
     List<Clinic> getClinicsBySpeciality(Speciality speciality);
 
+    List<Clinic> getClinicsForCurrentUser(Long userId);
 }

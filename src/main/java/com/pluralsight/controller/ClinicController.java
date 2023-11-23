@@ -90,4 +90,9 @@ public class ClinicController {
         return ResponseEntity.ok(updatedClinic);
     }
 
+    @GetMapping("/clinicsByUser/{userId}")
+    public List<Clinic> getClinicsForCurrentUser(@PathVariable Long userId) {
+        return clinicService.getClinicsForCurrentUser(userId);
+    }
+
 }
