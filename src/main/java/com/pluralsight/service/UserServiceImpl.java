@@ -125,6 +125,16 @@ public class UserServiceImpl implements UserService {
         if (updatedUserDTO.getLastName() != null) {
             existingUser.setLastName(updatedUserDTO.getLastName());
         }
+        if (updatedUserDTO.getSocialNumber() != null) {
+            existingUser.setSocialNumber(updatedUserDTO.getSocialNumber());
+        }
+        if (updatedUserDTO.getPhoneNumber() != null) {
+            existingUser.setPhoneNumber(updatedUserDTO.getPhoneNumber());
+        }
+        if (updatedUserDTO.getDateOfBirth() != null) {
+            existingUser.setDateOfBirth(updatedUserDTO.getDateOfBirth());
+        }
+
         // Continúa actualizando otros campos según sea necesario
 
         // Luego, guarda el usuario actualizado en tu base de datos
@@ -135,16 +145,9 @@ public class UserServiceImpl implements UserService {
     }
 
     // Método para convertir User a UserDTO
-    private UserDTO convertToUserDTO(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUser_id(user.getUser_id());
-        userDTO.setUsername(user.getUsername());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setFirstName(user.getFirstName());
-        userDTO.setLastName(user.getLastName());
-        // Agrega otros campos según sea necesario
 
-        return userDTO;
+    private UserDTO convertToUserDTO(User user) {
+        return modelMapper.map(user, UserDTO.class);
     }
 
 

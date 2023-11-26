@@ -86,8 +86,8 @@ public class User implements Serializable, UserDetails {
     @Column(name = "dui")
     private String dui;
     // ...for Patients
-    @Column(name = "social_number")
-    private String social_number;
+    @Column(name = "socialNumber")
+    private String socialNumber;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

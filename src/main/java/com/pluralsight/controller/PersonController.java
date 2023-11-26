@@ -121,8 +121,8 @@ public class PersonController {
             if (person.getDateOfBirth() == null) {
                 missingFields.add("dateOfBirth");
             }
-            if (person.getSocial_number() == null) {
-                missingFields.add("social_number");
+            if (person.getSocialNumber() == null) {
+                missingFields.add("socialNumber");
             }
             if (person.getRole() == null) {
                 missingFields.add("role");
