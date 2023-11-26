@@ -38,10 +38,10 @@ public class PersonController {
     private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
 
       @GetMapping("/user-info")
-      public ResponseEntity<Optional<User>> getUserInfo(@RequestHeader(name = "Authorization") String jwtToken) {
+      public ResponseEntity<Optional<UserDTO>> getUserInfo(@RequestHeader(name = "Authorization") String jwtToken) {
           String token = jwtToken.substring(7); // Elimina el prefijo "Bearer "
           String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-          Optional<User> user = userService.getUserByUsername(username);
+          Optional<UserDTO> user = userService.getUserByUsernameDTO(username);
 
           if (user != null) {
               return ResponseEntity.ok(user); // Devuelve la información del usuario como JSON

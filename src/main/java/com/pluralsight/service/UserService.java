@@ -20,6 +20,8 @@ public interface UserService<P extends User> {
 
     Optional<User> getUserByUsername(String username);
 
+    Optional<UserDTO> getUserByUsernameDTO(String username);
+
     User updateUser(User updatedUser);
 
     Set<User> getDoctorsByClinicId(Long clinicId);

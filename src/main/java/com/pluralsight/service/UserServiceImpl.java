@@ -96,6 +96,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<UserDTO> getUserByUsernameDTO(String username) {
+        Optional<User> userOptional = userRepository.findByUsername(username);
+
+        return userOptional.map(user -> modelMapper.map(user, UserDTO.class));
+    }
+
+    @Override
     public User updateUser(User updatedUser) {
         // Primero, verifica si el usuario con el ID especificado existe en tu sistema.
         User existingUser = userRepository.findById(updatedUser.getUser_id()).orElse(null);
