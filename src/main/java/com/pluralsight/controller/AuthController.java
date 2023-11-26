@@ -1,11 +1,13 @@
 package com.pluralsight.controller;
 
+import com.pluralsight.DTO.UserDTO;
 import com.pluralsight.entity.User;
 import com.pluralsight.security.AuthenticationRequest;
 import com.pluralsight.security.AuthenticationResponse;
 import com.pluralsight.security.JwtService;
 import com.pluralsight.service.UserService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.Optional;
 
+
 @RestController
 @CrossOrigin
 @RequestMapping("/api/v1")
@@ -35,6 +38,9 @@ public class AuthController {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     private UserService userService;
@@ -82,7 +88,8 @@ public class AuthController {
 
                 // Actualizar la contraseña del usuario
                 user.setPassword(hashedPassword);
-                userService.updateUser(user);
+
+                userService.updatePassword(hashedPassword);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");

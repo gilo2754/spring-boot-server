@@ -103,9 +103,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User updatedUser) {
+    public UserDTO updateUser(UserDTO updatedUserDTO) {
         // Primero, verifica si el usuario con el ID especificado existe en tu sistema.
-        User existingUser = userRepository.findById(updatedUser.getUser_id()).orElse(null);
+        User existingUser = userRepository.findById(updatedUserDTO.getUser_id()).orElse(null);
 
         if (existingUser == null) {
             // El usuario no existe, puedes manejar este caso de alguna manera, por ejemplo, lanzar una excepción.
@@ -113,25 +113,40 @@ public class UserServiceImpl implements UserService {
         }
 
         // Realiza las actualizaciones de los campos que desees permitir modificar
-        if (updatedUser.getUsername() != null) {
-            existingUser.setUsername(updatedUser.getUsername());
+        if (updatedUserDTO.getUsername() != null) {
+            existingUser.setUsername(updatedUserDTO.getUsername());
         }
-        if (updatedUser.getEmail() != null) {
-            existingUser.setEmail(updatedUser.getEmail());
+        if (updatedUserDTO.getEmail() != null) {
+            existingUser.setEmail(updatedUserDTO.getEmail());
         }
-        if (updatedUser.getFirstName() != null) {
-            existingUser.setFirstName(updatedUser.getFirstName());
+        if (updatedUserDTO.getFirstName() != null) {
+            existingUser.setFirstName(updatedUserDTO.getFirstName());
         }
-        if (updatedUser.getLastName() != null) {
-            existingUser.setLastName(updatedUser.getLastName());
+        if (updatedUserDTO.getLastName() != null) {
+            existingUser.setLastName(updatedUserDTO.getLastName());
         }
         // Continúa actualizando otros campos según sea necesario
 
         // Luego, guarda el usuario actualizado en tu base de datos
-         updatedUser = userRepository.save(existingUser);
+        userRepository.save(existingUser);
 
-        return updatedUser;
+        // Convierte el usuario actualizado a un DTO antes de devolverlo
+        return convertToUserDTO(existingUser);
     }
+
+    // Método para convertir User a UserDTO
+    private UserDTO convertToUserDTO(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUser_id(user.getUser_id());
+        userDTO.setUsername(user.getUsername());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
+        // Agrega otros campos según sea necesario
+
+        return userDTO;
+    }
+
 
     @Override
     public Set<User> getDoctorsByClinicId(Long clinicId) {
@@ -142,6 +157,11 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new ClinicNotFoundException("Clinic with id " + clinicId + " not found");
         }
+    }
+
+    @Override
+    public void updatePassword(String hashedPassword) {
+
     }
 
 }

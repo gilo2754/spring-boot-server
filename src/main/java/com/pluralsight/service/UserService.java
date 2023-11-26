@@ -22,8 +22,11 @@ public interface UserService<P extends User> {
 
     Optional<UserDTO> getUserByUsernameDTO(String username);
 
-    User updateUser(User updatedUser);
+    //UserDTO updateUser(User updatedUser);
+
+    UserDTO updateUser(UserDTO updatedUserDTO);
 
     Set<User> getDoctorsByClinicId(Long clinicId);
 
+    void updatePassword(String hashedPassword);
 }
