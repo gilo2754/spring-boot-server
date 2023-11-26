@@ -67,6 +67,10 @@ public class User implements Serializable, UserDetails {
     private LocalDate dateOfBirth;
 
     //Attributes for Doctors
+
+    @Column(name = "clinicCount")
+    private int clinicCount; // Contador de clínicas registradas
+
     @NotNull
     @Column(name = "speciality")
     @Enumerated(EnumType.STRING)

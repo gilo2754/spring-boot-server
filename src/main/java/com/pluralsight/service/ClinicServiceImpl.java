@@ -5,7 +5,10 @@ import com.pluralsight.entity.User;
 import com.pluralsight.enums.Role;
 import com.pluralsight.enums.Speciality;
 import com.pluralsight.exception.ClinicNotFoundException;
+import com.pluralsight.exception.MaxClinicsReachedException;
+import com.pluralsight.exception.UserNotFoundException;
 import com.pluralsight.repository.ClinicRepository;
+import com.pluralsight.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,10 +18,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.pluralsight.security.ApplicationConfig.MAX_CLINICS_ALLOWED;
+
 @Service
 public class ClinicServiceImpl implements ClinicService {
     @Autowired
     private ClinicRepository clinicRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
@@ -54,6 +61,19 @@ public class ClinicServiceImpl implements ClinicService {
 
         for (User doctor : clinic.getDoctors()) {
             Long doctorId = doctor.getUser_id();
+
+            // Obtenemos el doctor desde la base de datos para asegurarnos de tener el objeto actualizado
+            User existingDoctor = userRepository.findById(doctorId)
+                    .orElseThrow(() -> new UserNotFoundException("Doctor not found"));
+
+            if (existingDoctor.getClinicCount() >= MAX_CLINICS_ALLOWED) {
+                throw new MaxClinicsReachedException();
+            }
+
+            // Incrementamos el contador de clínicas y guardamos el doctor
+            existingDoctor.setClinicCount(existingDoctor.getClinicCount() + 1);
+            userRepository.save(existingDoctor);
+
 
             if (userService.getPersonById(doctorId) == null) {
                 // El médico no existe

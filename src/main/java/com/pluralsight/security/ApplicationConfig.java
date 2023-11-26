@@ -23,4 +23,7 @@ public class ApplicationConfig {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
+
+    public static final int MAX_CLINICS_ALLOWED = 2; // Puedes ajustar este valor según tus necesidades
+
 }
