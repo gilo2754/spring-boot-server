@@ -1,6 +1,7 @@
 package com.pluralsight.service;
 
 import com.pluralsight.DTO.UserDTO;
+import com.pluralsight.entity.Clinic;
 import com.pluralsight.entity.User;
 import com.pluralsight.enums.Role;
 
@@ -17,6 +18,8 @@ public interface UserService<P extends User> {
     Optional<User> getPersonById(Long personId);
 
     P createPerson(P person);
+
+    User createDoctorWithClinic(User doctor, Clinic clinic);
 
     Optional<User> getUserByUsername(String username);
 

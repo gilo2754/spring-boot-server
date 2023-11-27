@@ -2,9 +2,9 @@ package com.pluralsight.controller;
 
 import com.pluralsight.DTO.UserDTO;
 import com.pluralsight.entity.Address;
+import com.pluralsight.entity.Clinic;
 import com.pluralsight.entity.User;
 import com.pluralsight.enums.Role;
-import com.pluralsight.repository.UserRepository;
 import com.pluralsight.service.ClinicService;
 import com.pluralsight.service.UserService;
 import lombok.AllArgsConstructor;
@@ -121,9 +121,9 @@ public class PersonController {
             if (person.getDateOfBirth() == null) {
                 missingFields.add("dateOfBirth");
             }
-            if (person.getSocialNumber() == null) {
+           /* if (person.getSocialNumber() == null) {
                 missingFields.add("socialNumber");
-            }
+            }*/
             if (person.getRole() == null) {
                 missingFields.add("role");
             }
@@ -173,9 +173,17 @@ public class PersonController {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
                 }
             }
-            // Save the person
-            User createdPerson = userService.createPerson(person);
 
+            User createdPerson =null;
+            if(person.getRole().equals(Role.DOCTOR))
+            {
+                Clinic clinicDefault = clinicService.createClinic(new Clinic());
+                 createdPerson = userService.createDoctorWithClinic(person,clinicDefault);
+            }
+            else {
+                // Save the person as Patient
+                 createdPerson = userService.createPerson(person);
+            }
             // Return the created person with a status code of 201 (Created)
             return ResponseEntity.status(HttpStatus.CREATED).body(createdPerson);
         } catch (Exception e) {

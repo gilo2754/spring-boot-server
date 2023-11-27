@@ -91,6 +91,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
+    public User createDoctorWithClinic(User doctor, Clinic clinic) {
+        // Guardar al doctor
+        User savedDoctor = this.userRepository.save(doctor);
+
+        // Asociar la clínica con el doctor
+        clinic.getDoctors().add(savedDoctor); // Asume que en tu entidad Clinic hay una relación con los doctores
+        savedDoctor.getClinics().add(clinic); // Asume que en tu entidad User hay una relación con las clínicas
+
+        // Guardar la clínica
+        this.clinicRepository.save(clinic);
+
+        return savedDoctor;
+    }
+
+    @Transactional
     public Optional<User> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
