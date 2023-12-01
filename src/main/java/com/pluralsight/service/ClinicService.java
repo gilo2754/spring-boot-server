@@ -1,5 +1,6 @@
 package com.pluralsight.service;
 
+import com.pluralsight.DTO.ClinicDTO;
 import com.pluralsight.entity.Clinic;
 import com.pluralsight.enums.Speciality;
 
@@ -18,5 +19,5 @@ public interface ClinicService {
 
     List<Clinic> getClinicsBySpeciality(Speciality speciality);
 
-    List<Clinic> getClinicsForCurrentUser(Long userId);
+    List<ClinicDTO> getClinicsForCurrentUser(Long userId);
 }

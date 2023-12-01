@@ -38,7 +38,7 @@ public class Clinic implements Serializable {
     @Size(max = 200)
     private String clinic_address;
 
-    @NotBlank
+    //@NotBlank
     @Column(name = "clinic_phone_number")
     @Size(max = 20)
     private String clinic_phone_number;
@@ -60,7 +60,7 @@ public class Clinic implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
-                  //  CascadeType.PERSIST,
+                   // CascadeType.PERSIST,
                     CascadeType.MERGE
             })
     @JoinTable(name = "clinic_doctors",

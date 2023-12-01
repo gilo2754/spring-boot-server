@@ -78,12 +78,12 @@ public class User implements Serializable, UserDetails {
 
     @Column(name = "availability")
     private LocalTime availability;
+
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
-              //      CascadeType.PERSIST,
-                    CascadeType.MERGE
+                   CascadeType.MERGE,
+                    CascadeType.REMOVE
             })
-
     @JsonIgnore
     private Set<Clinic> clinics = new HashSet<>();
 

@@ -1,5 +1,6 @@
 package com.pluralsight.service;
 
+import com.pluralsight.DTO.ClinicDTO;
 import com.pluralsight.entity.Clinic;
 import com.pluralsight.entity.User;
 import com.pluralsight.enums.Role;
@@ -9,6 +10,7 @@ import com.pluralsight.exception.MaxClinicsReachedException;
 import com.pluralsight.exception.UserNotFoundException;
 import com.pluralsight.repository.ClinicRepository;
 import com.pluralsight.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,9 @@ public class ClinicServiceImpl implements ClinicService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
     public List<Clinic> listClinics() {
@@ -111,7 +116,7 @@ public class ClinicServiceImpl implements ClinicService {
         clinic.setSpeciality(updatedClinic.getSpeciality());
         clinic.setOpeningTime(updatedClinic.getOpeningTime());
         clinic.setClosingTime(updatedClinic.getClosingTime());
-        clinic.setDoctors(updatedClinic.getDoctors());
+        //clinic.setDoctors(updatedClinic.getDoctors());
         return clinicRepository.save(clinic);
     }
 
@@ -126,8 +131,12 @@ public class ClinicServiceImpl implements ClinicService {
     }
 
     @Transactional
-    public List<Clinic> getClinicsForCurrentUser(Long userId) {
-        return clinicRepository.findClinicsByUserId(userId);
+    public List<ClinicDTO> getClinicsForCurrentUser(Long userId) {
+        List<Clinic> clinics = clinicRepository.findClinicsByUserId(userId);
+
+        return clinics.stream()
+                .map(clinic -> modelMapper.map(clinic, ClinicDTO.class))
+                .collect(Collectors.toList());
     }
 
 }

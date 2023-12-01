@@ -1,5 +1,6 @@
 package com.pluralsight.repository;
 
+import com.pluralsight.DTO.ClinicDTO;
 import com.pluralsight.entity.Clinic;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -13,6 +14,7 @@ import java.util.List;
 public interface ClinicRepository extends CrudRepository<Clinic, Long> {
 
     List<Clinic> findBySpeciality(String speciality);
+
     @Query("SELECT c FROM Clinic c JOIN c.doctors u WHERE u.user_id = :user_id")
     List<Clinic> findClinicsByUserId(@Param("user_id") Long userId);
 }
