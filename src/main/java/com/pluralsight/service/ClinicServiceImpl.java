@@ -78,7 +78,7 @@ public class ClinicServiceImpl implements ClinicService {
     //fixme; this return all clinics
     @Transactional
     public List<Clinic> getClinicsBySpeciality(Speciality speciality) {
-        return clinicRepository.findBySpeciality(speciality.getValue())
+        return clinicRepository.findBySpeciality(speciality.name())
                 .stream()
                 //avoid NPEs
                 .filter(clinic -> clinic != null && clinic.getSpeciality() != null && clinic.getSpeciality().equals(speciality))
