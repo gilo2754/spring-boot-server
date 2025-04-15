@@ -21,11 +21,8 @@ class ClinicControllerTest {
     @Autowired
     private ClinicService clinicService;
 
-    @Test // Sanity check
-    public void contextLoads() throws Exception {
+    @Test
+    void contextLoads() {
         assertThat(clinicService).isNotNull();
     }
-
-
-
 }

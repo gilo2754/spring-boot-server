@@ -16,6 +16,11 @@ import java.util.stream.Collectors;
 public class AdminController {
    // private DoctorService doctorService;
 //TODO: que pueden hacer solo los ADMINS?
+   @GetMapping("/")
+   public String getDefaultMessage() {
+       return "Hello, World";
+   }
+
    @GetMapping("/specialities")
    public ResponseEntity<List<String>> getSpecialities() {
        List<String> specialities = Arrays.stream(Speciality.values())
