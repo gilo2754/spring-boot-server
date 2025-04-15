@@ -1,3 +1,86 @@
+# Doctolib2 - Aplicación Spring Boot
+
+Aplicación de gestión de citas médicas desarrollada con Spring Boot.
+
+## Requisitos
+
+- Java 17
+- Maven 3.8+
+- Docker y Docker Compose
+- Portainer (para despliegue)
+
+## Configuración para desarrollo local
+
+1. Clona el repositorio
+2. Copia el archivo `.env.example` a `.env` y configura las variables
+3. Ejecuta `mvn clean install` para construir el proyecto
+4. Ejecuta `docker-compose up` para iniciar la aplicación
+
+## Despliegue en Portainer
+
+### Preparación
+
+1. Asegúrate de tener Portainer instalado y configurado
+2. Crea un registro de Docker en Portainer si vas a usar una imagen privada
+3. Configura las variables de entorno en Portainer
+
+### Pasos para el despliegue
+
+1. En Portainer, ve a "Stacks" y haz clic en "Add stack"
+2. Asigna un nombre a tu stack (por ejemplo, "doctolib2")
+3. Copia el contenido del archivo `docker-compose.prod.yml`
+4. Configura las variables de entorno en la sección "Environment variables"
+5. Haz clic en "Deploy the stack"
+
+### Variables de entorno requeridas
+
+```
+DOCKER_IMAGE_NAME=doctolib2
+DOCKER_IMAGE_TAG=latest
+JWT_SECRET=your-jwt-secret-key
+MAIL_FROM_PASSWORT=your-email-password
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GOOGLE_REDIRECT_URI=http://your-domain:8081/login/oauth2/code/google
+```
+
+### Monitoreo
+
+La aplicación expone endpoints de Actuator para monitoreo:
+
+- Health check: `http://your-domain:8081/actuator/health`
+- Métricas: `http://your-domain:8081/actuator/metrics`
+- Info: `http://your-domain:8081/actuator/info`
+
+## Estructura del proyecto
+
+```
+.
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   └── resources/
+│   └── test/
+├── Dockerfile
+├── docker-compose.yml
+├── docker-compose.prod.yml
+├── .env.example
+└── pom.xml
+```
+
+## Características
+
+- Autenticación JWT
+- Integración con Google OAuth2
+- Envío de correos electrónicos
+- API REST documentada con Swagger
+- Monitoreo con Spring Boot Actuator
+- Métricas con Prometheus
+
+## Licencia
+
+Este proyecto está bajo la Licencia MIT.
+
 # Spring Boot for medical appointments
 
 This is a Spring Boot application that provides CRUD endpoints for managing various entities. It utilizes the following technologies and frameworks:
